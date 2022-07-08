@@ -11,7 +11,7 @@ using hjs_encomiendas_servidor.Persistencia;
 namespace hjs_encomiendas_servidor.Migrations
 {
     [DbContext(typeof(UsuarioContext))]
-    [Migration("20220703052605_InitialCreate")]
+    [Migration("20220707040618_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,6 +56,10 @@ namespace hjs_encomiendas_servidor.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("email")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("idCategoria")
                         .HasColumnType("int");

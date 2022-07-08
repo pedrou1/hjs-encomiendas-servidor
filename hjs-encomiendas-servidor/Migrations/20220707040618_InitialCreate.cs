@@ -32,6 +32,7 @@ namespace hjs_encomiendas_servidor.Migrations
                     password = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     nombre = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     apellido = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    email = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     telefono = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     activo = table.Column<bool>(type: "bit", nullable: false)
                 },

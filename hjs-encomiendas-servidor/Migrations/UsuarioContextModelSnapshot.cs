@@ -55,6 +55,10 @@ namespace hjs_encomiendas_servidor.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<string>("email")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.Property<int>("idCategoria")
                         .HasColumnType("int");
 

@@ -9,15 +9,24 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEntityFrameworkSqlServer();
-builder.Services.AddScoped<IDominio, UsuarioDom>();
+builder.Services.AddScoped<IDominio, dUsuario>();
 builder.Services.AddDbContext<UsuarioContext>(options =>
     options
         .UseSqlServer(builder.Configuration.GetConnectionString("hjsConnection")));
+
+builder.Services.AddCors(c =>
+ {
+     c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod()
+      .AllowAnyHeader());
+ });
 
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod()
+            .AllowAnyHeader());
 
 app.UseAuthorization();
 
