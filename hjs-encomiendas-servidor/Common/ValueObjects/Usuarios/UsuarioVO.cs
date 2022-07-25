@@ -1,12 +1,12 @@
 ﻿using hjs_encomiendas_servidor.Modelo;
 
-namespace hjs_encomiendas_servidor.Common.ValueObjects
+namespace hjs_encomiendas_servidor.Common.ValueObjects.Usuarios
 {
     public class UsuarioVO
     {
         public int idUsuario { get; set; }
 
-        public CategoriaUsuario? categoriaUsuario { get; set; }
+        public CategoriaUsuarioVO? categoriaUsuario { get; set; }
 
         public string usuario { get; set; }
 

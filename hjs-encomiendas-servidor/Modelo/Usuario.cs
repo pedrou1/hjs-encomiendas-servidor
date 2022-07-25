@@ -1,4 +1,4 @@
-﻿using hjs_encomiendas_servidor.Common.ValueObjects;
+﻿using hjs_encomiendas_servidor.Common.ValueObjects.Usuarios;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,7 +14,6 @@ namespace hjs_encomiendas_servidor.Modelo
             public Usuario(UsuarioVO usuarioVO)
         {
             this.idUsuario = usuarioVO.idUsuario;
-            this.categoriaUsuario = usuarioVO.categoriaUsuario;
             this.usuario = usuarioVO.usuario;
             this.password = usuarioVO.password;
             this.nombre = usuarioVO.nombre;

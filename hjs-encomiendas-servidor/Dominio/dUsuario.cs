@@ -1,5 +1,6 @@
 ﻿using hjs_encomiendas_servidor.Common;
 using hjs_encomiendas_servidor.Common.ValueObjects;
+using hjs_encomiendas_servidor.Common.ValueObjects.Usuarios;
 using hjs_encomiendas_servidor.Dominio.Interfaces;
 using hjs_encomiendas_servidor.Modelo;
 using hjs_encomiendas_servidor.Persistencia;
@@ -9,47 +10,55 @@ namespace hjs_encomiendas_servidor.Dominio
     public class dUsuario : IDominio
     {
         private readonly UsuarioContext context;
-
+        
         public dUsuario(UsuarioContext _context)
         {
             context = _context;
         }
-
+        
         public Usuario iniciarSesion(UsuarioSignInVO usuarioIn)
         {
+           /* context.CategoriaUsuario.Add(new CategoriaUsuario { nombre = "Administrador" });
+            context.SaveChanges();*/
+
+            string hashedPassword = Utils.hashPassword(usuarioIn.password);
+            
             var usuarioOut = context.Usuarios.FirstOrDefault(u => u.usuario == usuarioIn.usuario
-                      && u.password == usuarioIn.password && u.activo == true);
+                      && u.password == hashedPassword && u.activo == true);
 
             return usuarioOut;
         }
 
-        public OperationResult agregarUsuario(Usuario usuario)
+        public BaseMethodOut? agregarUsuario(UsuarioVO usuarioVO)
         {
+            string hashedPassword = Utils.hashPassword(usuarioVO.password);
+            usuarioVO.password = hashedPassword;
+            
+            Usuario usuario = new Usuario(usuarioVO);
+            CategoriaUsuario? categoria = obtenerCategoria(usuarioVO.categoriaUsuario.idCategoria);
+            if (categoria == null) return null;
+            
+            usuario.categoriaUsuario = categoria;
+
             context.Usuarios.Add(usuario);
 
             context.SaveChanges();
 
-            return OperationResult.Success;
+            return new BaseMethodOut { OperationResult = OperationResult.Success };
         }
 
-        public List<Usuario> obtenerUsuarios(int position)
+        public UsuariosVO obtenerUsuarios(GetDataVO getData)
         {
-            var usuarios = context.Usuarios
-                .Where(u => u.activo == true)
-                .OrderBy(u => u.nombre)
-                .Skip(position)
-                .Take(10)
+            var qry = (from u in context.Usuarios where u.activo == true select u);
+            var count = qry.Count();
+            var usuarios = qry.OrderBy(u => u.nombre)
+                .Skip(getData.PageIndex)
+                .Take(getData.PageSize)
                 .ToList();
 
+            UsuariosVO usuariosVO = new UsuariosVO{ usuarios = usuarios, totalRows = count };
 
-            String str = "";
-            foreach (Usuario u in usuarios)
-            {
-                str += $"Id:    {u.idUsuario}";
-                str += $"Nombre:  {u.nombre}";
-            }
-
-            return usuarios;
+            return usuariosVO;
         }
 
         public bool existeNombreUsuario(String usuarioIn)
@@ -60,8 +69,10 @@ namespace hjs_encomiendas_servidor.Dominio
             return exists;
         }
 
-        public OperationResult eliminarUsuario(int idUsuario)
+        public BaseMethodOut eliminarUsuario(int idUsuario)
         {
+            BaseMethodOut result = new BaseMethodOut { OperationResult = OperationResult.Success };
+
             var usuario = context.Usuarios.FirstOrDefault(u => u.idUsuario == idUsuario);
 
             if (usuario != null)
@@ -69,10 +80,18 @@ namespace hjs_encomiendas_servidor.Dominio
                 usuario.activo = false;
                 context.SaveChanges();
 
-                return OperationResult.Success;
+                return result;
             }
 
-            return OperationResult.Error;
+            result.OperationResult = OperationResult.Error;
+            return result;
+        }
+
+        public CategoriaUsuario? obtenerCategoria(int idCategoria)
+        {
+            var categoria = context.CategoriaUsuario.Where(c => c.idCategoria == idCategoria).FirstOrDefault();
+
+            return categoria;
         }
 
     }
