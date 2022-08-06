@@ -51,5 +51,14 @@ namespace hjs_encomiendas_servidor.Modelo
         [JsonIgnore]
         public bool activo { get; set; } = true;
 
+        public void update(UsuarioVO usuarioVO)
+        {
+            this.usuario = usuarioVO.usuario;
+            this.nombre = usuarioVO.nombre;
+            this.apellido = usuarioVO.apellido;
+            this.email = usuarioVO.email;
+            this.telefono = usuarioVO.telefono;
+        }
+
     }
 }

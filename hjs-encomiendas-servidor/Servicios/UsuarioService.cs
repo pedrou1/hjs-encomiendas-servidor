@@ -19,7 +19,7 @@ namespace hjs_encomiendas_servidor.Servicios
         private readonly dUsuario dUsuario;
         private readonly IJWTAuthenticationManager jWTAuthenticationManager;
 
-        public UsuarioService(UsuarioContext context, IJWTAuthenticationManager jWTAuthenticationManager)
+        public UsuarioService(ProjectContext context, IJWTAuthenticationManager jWTAuthenticationManager)
         {
             dUsuario = new dUsuario(context);
             this.jWTAuthenticationManager = jWTAuthenticationManager;
@@ -52,22 +52,24 @@ namespace hjs_encomiendas_servidor.Servicios
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("registrar")]
-        public OperationResult registrarUsuario(UsuarioVO usuario)
+        public BaseMethodOut registrarUsuario(UsuarioVO usuario)
         {
-
-            if (usuario == null) return OperationResult.InvalidUser;
             try
             {
-                if (dUsuario.existeNombreUsuario(usuario.usuario))
-                    return OperationResult.UsernameAlreadyExist;
+                BaseMethodOut result = new BaseMethodOut { OperationResult = OperationResult.InvalidUser };
 
-                var result = dUsuario.agregarUsuario(usuario);
+                if (usuario == null) return result;
 
-                if (result == null) return OperationResult.Error;
+                if (dUsuario.existeNombreUsuario(usuario.usuario)) {
+                    result.OperationResult = OperationResult.UsernameAlreadyExist;
+                    return result;
+                }
 
+                result = dUsuario.agregarUsuario(usuario);
 
-                return OperationResult.Success;
+                return result;
             }
             catch (Exception ex)
             {
@@ -75,21 +77,68 @@ namespace hjs_encomiendas_servidor.Servicios
             }
         }
 
-        [HttpGet()]
-        public JsonResult obtenerUsuarios([FromQuery] GetDataVO getData)
-            //getData?? paginationData??
+        [HttpPost("modificar")]
+        public BaseMethodOut modificarUsuario(UsuarioVO usuario)
         {
-            UsuariosVO usuarios = dUsuario.obtenerUsuarios(getData);
 
-            JsonResult json = new JsonResult(usuarios);
-            return json;
+            if (usuario == null) return new BaseMethodOut { OperationResult = OperationResult.InvalidUser };
 
+            try
+            {
+                var result = dUsuario.modificarUsuario(usuario);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+            [HttpGet()]
+        public JsonResult obtenerUsuarios([FromQuery] GetDataInVO getData)
+        {
+            try
+            {
+                UsuariosVO usuarios = dUsuario.obtenerUsuarios(getData);
+
+                JsonResult json = new JsonResult(usuarios);
+
+                return json;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("{idUsuario}")]
+        public JsonResult otenerUsuario(int idUsuario)
+        {
+            try
+            {
+                Usuario? usuario = dUsuario.obtenerUsuario(idUsuario);
+
+                JsonResult json = new JsonResult(usuario);
+                return json;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpDelete("{idUsuario}")]
         public BaseMethodOut borrarUsuario(int idUsuario)
         {
-            return dUsuario.eliminarUsuario(idUsuario);
+            try
+            {
+                return dUsuario.eliminarUsuario(idUsuario);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
         }
 

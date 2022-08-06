@@ -13,7 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEntityFrameworkSqlServer();
 builder.Services.AddScoped<IDominio, dUsuario>();
-builder.Services.AddDbContext<UsuarioContext>(options =>
+
+builder.Services.AddDbContext<ProjectContext>(options =>
     options
         .UseSqlServer(builder.Configuration.GetConnectionString("hjsConnection")));
 
