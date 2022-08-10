@@ -58,6 +58,7 @@ namespace hjs_encomiendas_servidor.Modelo
             this.apellido = usuarioVO.apellido;
             this.email = usuarioVO.email;
             this.telefono = usuarioVO.telefono;
+            this.idCategoria = usuarioVO.categoriaUsuario.idCategoria;
         }
 
     }

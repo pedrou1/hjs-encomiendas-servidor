@@ -15,10 +15,14 @@ namespace hjs_encomiendas_servidor.Modelo
             this.idUnidadTransporte = unidadTransporteVO.idUnidadTransporte;
             this.promedioConsumo = unidadTransporteVO.promedioConsumo;
             this.capacidad = unidadTransporteVO.capacidad;
+            this.nombre = unidadTransporteVO.nombre;
         }
 
         [Key]
         public int idUnidadTransporte { get; set; }
+
+        [StringLength(250)]
+        public string nombre { get; set; }
 
         public int promedioConsumo { get; set; }
 

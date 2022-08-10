@@ -6,6 +6,8 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Usuarios
     {
         public int idUsuario { get; set; }
 
+        public int idCategoria { get; set; }
+
         public CategoriaUsuarioVO? categoriaUsuario { get; set; }
 
         public string usuario { get; set; }

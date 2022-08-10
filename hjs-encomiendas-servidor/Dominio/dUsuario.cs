@@ -85,7 +85,7 @@ namespace hjs_encomiendas_servidor.Dominio
             {
                 if (usuarioVO.password != null) { 
                 string hashedPassword = Utils.hashPassword(usuarioVO.password);
-                usuarioVO.password = hashedPassword;
+                usuario.password = hashedPassword;
                 }
                 usuario.update(usuarioVO);
                 context.SaveChanges();

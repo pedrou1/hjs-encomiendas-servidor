@@ -70,7 +70,7 @@ namespace hjs_encomiendas_servidor.Servicios
             }
         }
 
-        [HttpDelete("{idUsuario}")]
+        [HttpDelete("{idUnidad}")]
         public BaseMethodOut borrarUnidad(int idUnidad)
         {
             try

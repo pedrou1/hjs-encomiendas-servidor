@@ -4,6 +4,8 @@
     {
         public int idUnidadTransporte { get; set; }
 
+        public string nombre { get; set; }
+
         public int promedioConsumo { get; set; }
 
         public int capacidad { get; set; }
