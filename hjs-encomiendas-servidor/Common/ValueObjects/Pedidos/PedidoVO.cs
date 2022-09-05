@@ -6,13 +6,19 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Pedidos
     {
         public int idPedido { get; set; }
 
-        public Usuario chofer { get; set; }
+        public int idChofer { get; set; }
+        
+        public Usuario? chofer { get; set; }
 
-        public Usuario cliente { get; set; }
+        public int idCliente { get; set; }
+        
+        public Usuario? cliente { get; set; }
 
-        public UnidadTransporte transporte { get; set; }
+        public int idTransporte { get; set; }
 
-        public int estado { get; set; }
+        public UnidadTransporte? transporte { get; set; }
+
+        public int estado { get; set; };
 
         public string? horaLimite { get; set; }
 
@@ -30,11 +36,11 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Pedidos
 
         public int distanciaRecorrida { get; set; }
 
-        public DateTime fechaCreacion { get; set; }
+        public DateTime? fechaCreacion { get; set; }
 
-        public DateTime fechaRetiro { get; set; }
+        public DateTime? fechaRetiro { get; set; }
 
-        public DateTime fechaEntrega { get; set; }
+        public DateTime? fechaEntrega { get; set; }
 
     }
 }

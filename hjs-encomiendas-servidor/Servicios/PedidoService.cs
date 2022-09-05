@@ -56,6 +56,24 @@ namespace hjs_encomiendas_servidor.Servicios
             return json;
         }
 
+        [HttpPost("modificar")]
+        public BaseMethodOut modificarUsuario(PedidoVO pedidoVO)
+        {
+
+            if (pedidoVO == null) return new BaseMethodOut { OperationResult = OperationResult.Error };
+
+            try
+            {
+                var result = dPedido.modificarPedido(pedidoVO);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [HttpDelete("{idPedido}")]
         public BaseMethodOut borrarPedido(int idPedido)
         {

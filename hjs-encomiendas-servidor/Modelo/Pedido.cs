@@ -14,9 +14,9 @@ namespace hjs_encomiendas_servidor.Modelo
         public Pedido(PedidoVO pedidoVO)
         {
             this.idPedido = pedidoVO.idPedido;
-            this.chofer = pedidoVO.chofer;
-            this.cliente = pedidoVO.cliente;
-            this.transporte = pedidoVO.transporte;
+            this.idChofer = pedidoVO.idChofer;
+            this.idCliente = pedidoVO.idCliente;
+            this.idTransporte = pedidoVO.idTransporte;
             this.estado = pedidoVO.estado;
             this.horaLimite = pedidoVO.horaLimite;
             this.orden = pedidoVO.orden;
@@ -26,7 +26,7 @@ namespace hjs_encomiendas_servidor.Modelo
             this.cubicaje = pedidoVO.cubicaje;
             this.tarifa = pedidoVO.tarifa;
             this.distanciaRecorrida = pedidoVO.distanciaRecorrida;
-            this.fechaCreacion = pedidoVO.fechaCreacion;
+            this.fechaCreacion = (DateTime)(pedidoVO.fechaCreacion != null ? pedidoVO.fechaCreacion : DateTime.Now);
             this.fechaRetiro = pedidoVO.fechaRetiro;
             this.fechaEntrega = pedidoVO.fechaEntrega;
         }
@@ -70,12 +70,31 @@ namespace hjs_encomiendas_servidor.Modelo
 
         public DateTime fechaCreacion { get; set; }
 
-        public DateTime fechaRetiro { get; set; }
+        public DateTime? fechaRetiro { get; set; }
 
-        public DateTime fechaEntrega { get; set; }
+        public DateTime? fechaEntrega { get; set; }
 
         [JsonIgnore]
         public bool activo { get; set; } = true;
-        
+
+        public void update(PedidoVO pedidoVO)
+        {
+            this.idChofer = pedidoVO.idChofer;
+            this.idCliente = pedidoVO.idCliente;
+            this.idTransporte = pedidoVO.idTransporte;
+            this.estado = pedidoVO.estado;
+            this.horaLimite = pedidoVO.horaLimite;
+            this.orden = pedidoVO.orden;
+            this.tipo = pedidoVO.tipo;
+            this.tamaño = pedidoVO.tamaño;
+            this.peso = pedidoVO.peso;
+            this.cubicaje = pedidoVO.cubicaje;
+            this.tarifa = pedidoVO.tarifa;
+            this.distanciaRecorrida = pedidoVO.distanciaRecorrida;
+            this.fechaCreacion = (DateTime)(pedidoVO.fechaCreacion != null ? pedidoVO.fechaCreacion : DateTime.Now);
+            this.fechaRetiro = pedidoVO.fechaRetiro;
+            this.fechaEntrega = pedidoVO.fechaEntrega;
+        }
+
     }
 }

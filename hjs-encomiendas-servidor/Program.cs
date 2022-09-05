@@ -18,9 +18,17 @@ builder.Services.AddDbContext<ProjectContext>(options =>
     options
         .UseSqlServer(builder.Configuration.GetConnectionString("hjsConnection")));
 
-builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+
+/*builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {
     builder.WithOrigins("http://localhost:3000")
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+}));
+*/
+builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+{
+    builder.AllowAnyOrigin()
            .AllowAnyMethod()
            .AllowAnyHeader();
 }));

@@ -4,6 +4,7 @@ using hjs_encomiendas_servidor.Common.ValueObjects.Pedidos;
 using hjs_encomiendas_servidor.Dominio.Interfaces;
 using hjs_encomiendas_servidor.Modelo;
 using hjs_encomiendas_servidor.Persistencia;
+using Microsoft.EntityFrameworkCore;
 
 namespace hjs_encomiendas_servidor.Dominio
 {
@@ -33,7 +34,7 @@ namespace hjs_encomiendas_servidor.Dominio
             var count = qry.Count();
             var pedidos = qry.OrderBy(p => p.idPedido)
                 .Skip(getData.PageIndex)
-                .Take(getData.PageSize)
+                .Take(getData.PageSize).Include(p => p.chofer).Include(p => p.cliente).Include(p => p.transporte)
                 .ToList();
 
             PedidosVO usuariosVO = new PedidosVO { pedidos = pedidos, totalRows = count, OperationResult = OperationResult.Success };
@@ -57,6 +58,24 @@ namespace hjs_encomiendas_servidor.Dominio
             if (pedido != null)
             {
                 pedido.activo = false;
+                context.SaveChanges();
+
+                return result;
+            }
+
+            result.OperationResult = OperationResult.Error;
+            return result;
+        }
+
+        public BaseMethodOut modificarPedido(PedidoVO pedidoVO)
+        {
+            BaseMethodOut result = new BaseMethodOut { OperationResult = OperationResult.Success };
+
+            var pedido = obtenerPedido(pedidoVO.idPedido);
+
+            if (pedido != null)
+            {
+                pedido.update(pedidoVO);
                 context.SaveChanges();
 
                 return result;

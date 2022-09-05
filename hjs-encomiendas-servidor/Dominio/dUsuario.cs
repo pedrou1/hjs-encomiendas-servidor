@@ -4,6 +4,8 @@ using hjs_encomiendas_servidor.Common.ValueObjects.Usuarios;
 using hjs_encomiendas_servidor.Dominio.Interfaces;
 using hjs_encomiendas_servidor.Modelo;
 using hjs_encomiendas_servidor.Persistencia;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace hjs_encomiendas_servidor.Dominio
 {
@@ -46,9 +48,24 @@ namespace hjs_encomiendas_servidor.Dominio
 
         public UsuariosVO obtenerUsuarios(GetDataInVO getData)
         {
-            var qry = (from u in context.Usuarios where u.activo == true select u);
-            var count = qry.Count();
-            var usuarios = qry.OrderBy(u => u.nombre)
+            var query = (from u in context.Usuarios where u.activo == true select u);
+
+         
+            string[] filters = JsonConvert.DeserializeObject<string[]>(getData.filters);
+            if (filters != null)
+            {
+                foreach (string filter in filters)
+                {
+                    if (!string.IsNullOrEmpty(filter))
+                    {
+                        query = query.Where(collection => EF.Functions.Like(collection.nombre, "%" + filter + "%") 
+                        || EF.Functions.Like(collection.apellido, "%" + filter + "%") || (collection.telefono != null && EF.Functions.Like(collection.telefono, "%" + filter + "%"))
+                        || (collection.email != null && EF.Functions.Like(collection.email, "%" + filter + "%")));
+                    }
+                }
+            }
+            var count = query.Count();
+            var usuarios = query.OrderBy(u => u.nombre)
                 .Skip(getData.PageIndex)
                 .Take(getData.PageSize)
                 .ToList();
