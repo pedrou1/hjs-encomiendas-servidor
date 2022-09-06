@@ -18,7 +18,7 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Pedidos
 
         public UnidadTransporte? transporte { get; set; }
 
-        public int estado { get; set; };
+        public int estado { get; set; }
 
         public string? horaLimite { get; set; }
 

@@ -57,7 +57,7 @@ namespace hjs_encomiendas_servidor.Servicios
         }
 
         [HttpPost("modificar")]
-        public BaseMethodOut modificarUsuario(PedidoVO pedidoVO)
+        public BaseMethodOut modificarPedido(PedidoVO pedidoVO)
         {
 
             if (pedidoVO == null) return new BaseMethodOut { OperationResult = OperationResult.Error };

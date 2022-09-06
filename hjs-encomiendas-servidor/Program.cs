@@ -18,10 +18,10 @@ builder.Services.AddDbContext<ProjectContext>(options =>
     options
         .UseSqlServer(builder.Configuration.GetConnectionString("hjsConnection")));
 
-
+// Agregar solo en produccion
 /*builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {
-    builder.WithOrigins("http://localhost:3000")
+    builder.WithOrigins("{URL FRONT}")
            .AllowAnyMethod()
            .AllowAnyHeader();
 }));
