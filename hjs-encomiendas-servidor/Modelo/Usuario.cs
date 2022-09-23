@@ -20,6 +20,7 @@ namespace hjs_encomiendas_servidor.Modelo
             this.apellido = usuarioVO.apellido;
             this.email = usuarioVO.email;
             this.telefono = usuarioVO.telefono;
+            this.direccion = usuarioVO.direccion;
         }
 
         [Key]
@@ -48,6 +49,9 @@ namespace hjs_encomiendas_servidor.Modelo
         [StringLength(150)]
         public string? telefono { get; set; }
 
+        [StringLength(250)]
+        public string? direccion { get; set; }
+
         [JsonIgnore]
         public bool activo { get; set; } = true;
 
@@ -59,6 +63,7 @@ namespace hjs_encomiendas_servidor.Modelo
             this.email = usuarioVO.email;
             this.telefono = usuarioVO.telefono;
             this.idCategoria = usuarioVO.categoriaUsuario.idCategoria;
+            this.direccion = usuarioVO.direccion;
         }
 
     }
