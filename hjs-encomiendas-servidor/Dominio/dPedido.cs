@@ -28,9 +28,15 @@ namespace hjs_encomiendas_servidor.Dominio
             return new BaseMethodOut { OperationResult = OperationResult.Success };
         }
 
-        public PedidosVO obtenerPedidos(GetDataInVO getData)
+        public PedidosVO obtenerPedidos(GetDataInPedidoVO getData)
         {
             var qry = (from p in context.Pedido where p.activo == true select p);
+
+            if (getData.idUsuarioPedido != 0)
+            {
+                qry = qry.Where(collection => collection.idCliente == getData.idUsuarioPedido);
+            }
+
             var count = qry.Count();
             var pedidos = qry.OrderBy(p => p.idPedido)
                 .Skip(getData.PageIndex)

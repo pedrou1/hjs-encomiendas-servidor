@@ -96,7 +96,7 @@ namespace hjs_encomiendas_servidor.Servicios
         }
 
             [HttpGet()]
-        public JsonResult obtenerUsuarios([FromQuery] GetDataInVO getData)
+        public JsonResult obtenerUsuarios([FromQuery] GetDataInUsuariosVO getData)
         {
             try
             {

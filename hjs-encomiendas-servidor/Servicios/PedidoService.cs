@@ -38,7 +38,7 @@ namespace hjs_encomiendas_servidor.Servicios
         }
 
         [HttpGet()]
-        public JsonResult obtenerPedidos([FromQuery] GetDataInVO getData)
+        public JsonResult obtenerPedidos([FromQuery] GetDataInPedidoVO getData)
         {
             PedidosVO pedidos = dPedido.obtenerPedidos(getData);
 
@@ -56,7 +56,7 @@ namespace hjs_encomiendas_servidor.Servicios
             return json;
         }
 
-        [HttpPost("modificar")]
+        [HttpPut("modificar")]
         public BaseMethodOut modificarPedido(PedidoVO pedidoVO)
         {
 

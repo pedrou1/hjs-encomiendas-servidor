@@ -46,7 +46,7 @@ namespace hjs_encomiendas_servidor.Dominio
             return new BaseMethodOut { OperationResult = OperationResult.Success };
         }
 
-        public UsuariosVO obtenerUsuarios(GetDataInVO getData)
+        public UsuariosVO obtenerUsuarios(GetDataInUsuariosVO getData)
         {
             var query = (from u in context.Usuarios where u.activo == true select u);
 
@@ -64,6 +64,12 @@ namespace hjs_encomiendas_servidor.Dominio
                     }
                 }
             }
+
+            if(getData.Tipo != 0)
+            {
+                query = query.Where(collection => collection.idCategoria == getData.Tipo);
+            }
+            
             var count = query.Count();
             var usuarios = query.OrderBy(u => u.nombre)
                 .Skip(getData.PageIndex)

@@ -21,5 +21,7 @@ namespace hjs_encomiendas_servidor.Persistencia
         public DbSet<Pedido> Pedido { get; set; }
 
         public DbSet<EstadoPedido> EstadoPedido { get; set; }
+
+        public DbSet<TipoPedido> TipoPedido { get; set; }
     }
 }
