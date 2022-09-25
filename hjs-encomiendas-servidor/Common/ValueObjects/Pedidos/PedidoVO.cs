@@ -18,14 +18,16 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Pedidos
 
         public UnidadTransporte? transporte { get; set; }
 
+        public int idTipoPedido { get; set; }
+        
+        public TipoPedido? tipoPedido { get; set; }
+
         public int estado { get; set; }
 
         public string? horaLimite { get; set; }
 
         public int orden { get; set; }
-
-        public int tipo { get; set; }
-
+        
         public int tamaño { get; set; }
 
         public int peso { get; set; }

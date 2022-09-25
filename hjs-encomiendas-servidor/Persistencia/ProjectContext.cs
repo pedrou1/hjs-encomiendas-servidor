@@ -15,7 +15,7 @@ namespace hjs_encomiendas_servidor.Persistencia
         public DbSet<CategoriaUsuario> CategoriaUsuario { get; set; }
 
         public DbSet<UnidadTransporte> UnidadTransporte { get; set; }
-
+        
         public DbSet<Estado> Estado { get; set; }
 
         public DbSet<Pedido> Pedido { get; set; }
@@ -23,5 +23,7 @@ namespace hjs_encomiendas_servidor.Persistencia
         public DbSet<EstadoPedido> EstadoPedido { get; set; }
 
         public DbSet<TipoPedido> TipoPedido { get; set; }
+
+        public DbSet<Gasto> Gasto { get; set; }
     }
 }

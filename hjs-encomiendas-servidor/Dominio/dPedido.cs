@@ -40,7 +40,7 @@ namespace hjs_encomiendas_servidor.Dominio
             var count = qry.Count();
             var pedidos = qry.OrderBy(p => p.idPedido)
                 .Skip(getData.PageIndex)
-                .Take(getData.PageSize).Include(p => p.chofer).Include(p => p.cliente).Include(p => p.transporte)
+                .Take(getData.PageSize).Include(p => p.chofer).Include(p => p.cliente).Include(p => p.transporte).Include(p => p.tipoPedido)
                 .ToList();
 
             PedidosVO usuariosVO = new PedidosVO { pedidos = pedidos, totalRows = count, OperationResult = OperationResult.Success };

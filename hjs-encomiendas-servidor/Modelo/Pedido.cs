@@ -20,7 +20,7 @@ namespace hjs_encomiendas_servidor.Modelo
             this.estado = pedidoVO.estado;
             this.horaLimite = pedidoVO.horaLimite;
             this.orden = pedidoVO.orden;
-            this.tipo = pedidoVO.tipo;
+            this.idTipoPedido = pedidoVO.idTipoPedido;
             this.tamaño = pedidoVO.tamaño;
             this.peso = pedidoVO.peso;
             this.cubicaje = pedidoVO.cubicaje;
@@ -49,15 +49,18 @@ namespace hjs_encomiendas_servidor.Modelo
         
         public UnidadTransporte transporte { get; set; }
 
+        [ForeignKey("tipoPedido")]
+        public int idTipoPedido { get; set; }
+
+        public TipoPedido tipoPedido { get; set; }
+
         public int estado { get; set; }
 
         [StringLength(250)]
         public string? horaLimite { get; set; }
 
         public int orden { get; set; }
-
-        public int tipo { get; set; }
-
+        
         public int tamaño { get; set; }
 
         public int peso { get; set; }
@@ -85,7 +88,7 @@ namespace hjs_encomiendas_servidor.Modelo
             this.estado = pedidoVO.estado;
             this.horaLimite = pedidoVO.horaLimite;
             this.orden = pedidoVO.orden;
-            this.tipo = pedidoVO.tipo;
+            this.idTipoPedido = pedidoVO.idTipoPedido;
             this.tamaño = pedidoVO.tamaño;
             this.peso = pedidoVO.peso;
             this.cubicaje = pedidoVO.cubicaje;
