@@ -1,4 +1,6 @@
-﻿namespace hjs_encomiendas_servidor.Common.ValueObjects.UnidadesTransporte
+﻿using hjs_encomiendas_servidor.Modelo;
+
+namespace hjs_encomiendas_servidor.Common.ValueObjects.UnidadesTransporte
 {
     public class UnidadTransporteVO
     {
@@ -9,5 +11,9 @@
         public int promedioConsumo { get; set; }
 
         public int capacidad { get; set; }
+
+        public Usuario? chofer { get; set; }
+
+        public int idChofer { get; set; }
     }
 }

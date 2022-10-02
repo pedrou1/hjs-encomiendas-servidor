@@ -70,6 +70,22 @@ namespace hjs_encomiendas_servidor.Servicios
             }
         }
 
+        [HttpGet("chofer/{idChofer}")]
+        public JsonResult otenerUnidadDeChofer(int idChofer)
+        {
+            try
+            {
+                UnidadTransporte? unidad = dUnidadTransporte.obtenerUnidadTransporteDeChofer(idChofer);
+
+                JsonResult json = new JsonResult(unidad);
+                return json;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [HttpDelete("{idUnidad}")]
         public BaseMethodOut borrarUnidad(int idUnidad)
         {

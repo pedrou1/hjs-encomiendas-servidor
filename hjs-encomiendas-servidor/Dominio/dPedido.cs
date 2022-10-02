@@ -47,6 +47,25 @@ namespace hjs_encomiendas_servidor.Dominio
 
             return usuariosVO;
         }
+
+        public PedidosVO obtenerPedidosChofer(GetDataInPedidoVO getData)
+        {
+            var qry = (from p in context.Pedido where p.activo == true select p);
+
+            if (getData.idUsuarioChofer != 0)
+            {
+                qry = qry.Where(collection => collection.idChofer == getData.idUsuarioChofer && collection.fechaCreacion.Day == getData.fecha.Day);
+            } else {
+                return new PedidosVO { OperationResult = OperationResult.Error };
+            }
+            
+            var pedidos = qry.OrderBy(p => p.idPedido).Include(p => p.cliente).Include(p => p.tipoPedido)
+                .ToList();
+
+            PedidosVO usuariosVO = new PedidosVO { pedidos = pedidos, OperationResult = OperationResult.Success };
+
+            return usuariosVO;
+        }
         
         public Pedido? obtenerPedido(int idPedido)
         {
@@ -82,6 +101,24 @@ namespace hjs_encomiendas_servidor.Dominio
             if (pedido != null)
             {
                 pedido.update(pedidoVO);
+                context.SaveChanges();
+
+                return result;
+            }
+
+            result.OperationResult = OperationResult.Error;
+            return result;
+        }
+
+        public BaseMethodOut actualizarEstadoPedido(PedidoVO pedidoVO)
+        {
+            BaseMethodOut result = new BaseMethodOut { OperationResult = OperationResult.Success };
+
+            var pedido = obtenerPedido(pedidoVO.idPedido);
+
+            if (pedido != null)
+            {
+                pedido.estado = pedidoVO.estado;
                 context.SaveChanges();
 
                 return result;

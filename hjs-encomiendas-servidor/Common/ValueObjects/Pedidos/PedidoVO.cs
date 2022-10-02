@@ -38,6 +38,12 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Pedidos
 
         public int distanciaRecorrida { get; set; }
 
+        public string? nombreDireccion { get; set; }
+
+        public float? latitude { get; set; }
+
+        public float? longitude { get; set; }
+
         public DateTime? fechaCreacion { get; set; }
 
         public DateTime? fechaRetiro { get; set; }

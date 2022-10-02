@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using hjs_encomiendas_servidor.Persistencia;
 
@@ -11,9 +12,10 @@ using hjs_encomiendas_servidor.Persistencia;
 namespace hjs_encomiendas_servidor.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    partial class ProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20220929013911_direccionPedido")]
+    partial class direccionPedido
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -237,9 +239,6 @@ namespace hjs_encomiendas_servidor.Migrations
                     b.Property<int>("capacidad")
                         .HasColumnType("int");
 
-                    b.Property<int>("idChofer")
-                        .HasColumnType("int");
-
                     b.Property<string>("nombre")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -249,8 +248,6 @@ namespace hjs_encomiendas_servidor.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("idUnidadTransporte");
-
-                    b.HasIndex("idChofer");
 
                     b.ToTable("UnidadTransporte");
                 });
@@ -379,17 +376,6 @@ namespace hjs_encomiendas_servidor.Migrations
                     b.Navigation("tipoPedido");
 
                     b.Navigation("transporte");
-                });
-
-            modelBuilder.Entity("hjs_encomiendas_servidor.Modelo.UnidadTransporte", b =>
-                {
-                    b.HasOne("hjs_encomiendas_servidor.Modelo.Usuario", "chofer")
-                        .WithMany()
-                        .HasForeignKey("idChofer")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("chofer");
                 });
 
             modelBuilder.Entity("hjs_encomiendas_servidor.Modelo.Usuario", b =>

@@ -47,6 +47,16 @@ namespace hjs_encomiendas_servidor.Servicios
 
         }
 
+        [HttpGet("chofer")]
+        public JsonResult obtenerPedidosChofer([FromQuery] GetDataInPedidoVO getData)
+        {
+            PedidosVO pedidos = dPedido.obtenerPedidosChofer(getData);
+
+            JsonResult json = new JsonResult(pedidos);
+            return json;
+
+        }
+
         [HttpGet("{idPedido}")]
         public JsonResult otenerPedido(int idPedido)
         {
@@ -65,6 +75,24 @@ namespace hjs_encomiendas_servidor.Servicios
             try
             {
                 var result = dPedido.modificarPedido(pedidoVO);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPut("modificar/estado")]
+        public BaseMethodOut actualizarEstadoPedido(PedidoVO pedidoVO)
+        {
+
+            if (pedidoVO == null) return new BaseMethodOut { OperationResult = OperationResult.Error };
+
+            try
+            {
+                var result = dPedido.actualizarEstadoPedido(pedidoVO);
 
                 return result;
             }

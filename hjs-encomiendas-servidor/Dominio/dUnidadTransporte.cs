@@ -5,6 +5,7 @@ using hjs_encomiendas_servidor.Common.ValueObjects.Usuarios;
 using hjs_encomiendas_servidor.Dominio.Interfaces;
 using hjs_encomiendas_servidor.Modelo;
 using hjs_encomiendas_servidor.Persistencia;
+using Microsoft.EntityFrameworkCore;
 
 namespace hjs_encomiendas_servidor.Dominio
 {
@@ -35,6 +36,7 @@ namespace hjs_encomiendas_servidor.Dominio
             var transportes = qry.OrderBy(u => u.idUnidadTransporte)
                 .Skip(getData.PageIndex)
                 .Take(getData.PageSize)
+                .Include(u => u.chofer)
                 .ToList();
 
             UnidadesTransporteVO usuariosVO = new UnidadesTransporteVO { unidadesTransporte = transportes, totalRows = count, OperationResult = OperationResult.Success };
@@ -46,6 +48,13 @@ namespace hjs_encomiendas_servidor.Dominio
         public UnidadTransporte? obtenerUnidadTransporte(int idUnidadTransporte)
         {
             var unidadTransporte = context.UnidadTransporte.Where(u => u.idUnidadTransporte == idUnidadTransporte && u.activo == true).FirstOrDefault();
+
+            return unidadTransporte;
+        }
+
+        public UnidadTransporte? obtenerUnidadTransporteDeChofer(int idChofer)
+        {
+            var unidadTransporte = context.UnidadTransporte.Where(u => u.idChofer == idChofer && u.activo == true).FirstOrDefault();
 
             return unidadTransporte;
         }

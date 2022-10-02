@@ -29,6 +29,9 @@ namespace hjs_encomiendas_servidor.Modelo
             this.fechaCreacion = (DateTime)(pedidoVO.fechaCreacion != null ? pedidoVO.fechaCreacion : DateTime.Now);
             this.fechaRetiro = pedidoVO.fechaRetiro;
             this.fechaEntrega = pedidoVO.fechaEntrega;
+            this.nombreDireccion = pedidoVO.nombreDireccion;
+            this.latitude = pedidoVO.latitude;
+            this.longitude = pedidoVO.longitude;
         }
 
         [Key]
@@ -71,6 +74,13 @@ namespace hjs_encomiendas_servidor.Modelo
 
         public int distanciaRecorrida { get; set; }
 
+        [StringLength(250)]
+        public string? nombreDireccion { get; set; }
+
+        public float? latitude { get; set; }
+
+        public float? longitude { get; set; }
+
         public DateTime fechaCreacion { get; set; }
 
         public DateTime? fechaRetiro { get; set; }
@@ -97,6 +107,9 @@ namespace hjs_encomiendas_servidor.Modelo
             this.fechaCreacion = (DateTime)(pedidoVO.fechaCreacion != null ? pedidoVO.fechaCreacion : DateTime.Now);
             this.fechaRetiro = pedidoVO.fechaRetiro;
             this.fechaEntrega = pedidoVO.fechaEntrega;
+            this.nombreDireccion = pedidoVO.nombreDireccion;
+            this.latitude = pedidoVO.latitude;
+            this.longitude = pedidoVO.longitude;
         }
 
     }
