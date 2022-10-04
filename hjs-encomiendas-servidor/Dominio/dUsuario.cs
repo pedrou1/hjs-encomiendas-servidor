@@ -46,6 +46,24 @@ namespace hjs_encomiendas_servidor.Dominio
             return new BaseMethodOut { OperationResult = OperationResult.Success };
         }
 
+        public List<int> obtenerCantidadClientesPorMes()
+        {
+            
+            var usuarios = Enumerable.Range(1, 12).Select(i => context.Usuarios.Where(u => u.fechaCreacion.Month == i && u.fechaCreacion.Year == DateTime.Now.Year).Count()).ToList();
+/*
+            var users = context.Usuarios.Where(u => u.activo == true && u.idCategoria == 1 && u.fechaCreacion.Year == ).ToList();
+            List<int> usersByMonth = new List<int>();
+            for (int i = 0; i < 12; i++)
+            {
+                usersByMonth.Add(0);
+            }
+            foreach (var user in users)
+            {
+                usersByMonth[user.fechaCreacion.Month - 1]++;
+            }*/
+            return usuarios;
+        }
+
         public UsuariosVO obtenerUsuarios(GetDataInUsuariosVO getData)
         {
             var query = (from u in context.Usuarios where u.activo == true select u);

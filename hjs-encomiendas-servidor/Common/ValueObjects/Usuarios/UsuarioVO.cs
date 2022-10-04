@@ -24,5 +24,7 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Usuarios
 
         public string? telefono { get; set; }
 
+        public DateTime? fechaCreacion { get; set; }
+
     }
 }

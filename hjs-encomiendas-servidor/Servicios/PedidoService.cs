@@ -47,6 +47,16 @@ namespace hjs_encomiendas_servidor.Servicios
 
         }
 
+        [HttpGet("optimizacion")]
+        public JsonResult obtenerRutaOptimizada([FromQuery] GetDataInPedidoVO getData)
+        {
+            PedidosVO pedidos = dPedido.obtenerOptimizacion(getData);
+
+            JsonResult json = new JsonResult(pedidos);
+            return json;
+
+        }
+
         [HttpGet("chofer")]
         public JsonResult obtenerPedidosChofer([FromQuery] GetDataInPedidoVO getData)
         {
@@ -55,6 +65,15 @@ namespace hjs_encomiendas_servidor.Servicios
             JsonResult json = new JsonResult(pedidos);
             return json;
 
+        }
+
+        [HttpGet("por-mes")]
+        public JsonResult obtenerCantidadPedidosPorMes()
+        {
+            List<int> cantidadPedidos = dPedido.obtenerCantidadPedidosPorMes();
+
+            JsonResult json = new JsonResult(cantidadPedidos);
+            return json;
         }
 
         [HttpGet("{idPedido}")]

@@ -33,7 +33,7 @@ namespace hjs_encomiendas_servidor.Modelo
         [ForeignKey("chofer")]
         public int idChofer { get; set; }
 
-        public Usuario chofer { get; set; }
+        public Usuario? chofer { get; set; }
 
         [JsonIgnore]
         public bool activo { get; set; } = true;

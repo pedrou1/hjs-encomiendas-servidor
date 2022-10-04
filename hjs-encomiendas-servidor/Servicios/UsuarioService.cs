@@ -112,6 +112,15 @@ namespace hjs_encomiendas_servidor.Servicios
             }
         }
 
+        [HttpGet("por-mes")]
+        public JsonResult obtenerCantidadClientesPorMes()
+        {
+            List<int> cantidadPedidos = dUsuario.obtenerCantidadClientesPorMes();
+
+            JsonResult json = new JsonResult(cantidadPedidos);
+            return json;
+        }
+
         [HttpGet("{idUsuario}")]
         public JsonResult otenerUsuario(int idUsuario)
         {

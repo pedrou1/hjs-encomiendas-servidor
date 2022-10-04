@@ -21,6 +21,7 @@ namespace hjs_encomiendas_servidor.Modelo
             this.email = usuarioVO.email;
             this.telefono = usuarioVO.telefono;
             this.direccion = usuarioVO.direccion;
+            this.fechaCreacion = (DateTime)(usuarioVO.fechaCreacion != null ? usuarioVO.fechaCreacion : DateTime.Now);
         }
 
         [Key]
@@ -52,6 +53,8 @@ namespace hjs_encomiendas_servidor.Modelo
         [StringLength(250)]
         public string? direccion { get; set; }
 
+        public DateTime fechaCreacion { get; set; }
+
         [JsonIgnore]
         public bool activo { get; set; } = true;
 
@@ -64,6 +67,7 @@ namespace hjs_encomiendas_servidor.Modelo
             this.telefono = usuarioVO.telefono;
             this.idCategoria = usuarioVO.categoriaUsuario.idCategoria;
             this.direccion = usuarioVO.direccion;
+            this.fechaCreacion = (DateTime)(usuarioVO.fechaCreacion != null ? usuarioVO.fechaCreacion : DateTime.Now);
         }
 
     }
