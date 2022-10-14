@@ -95,7 +95,25 @@ namespace hjs_encomiendas_servidor.Servicios
             }
         }
 
-            [HttpGet()]
+        [HttpPut("modificar-contrasenia")]
+        public BaseMethodOut modificarConstraseniaUsuario(UsuarioVO usuario)
+        {
+
+            if (usuario == null) return new BaseMethodOut { OperationResult = OperationResult.InvalidUser };
+
+            try
+            {
+                var result = dUsuario.modificarConstraseniaUsuario(usuario);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet()]
         public JsonResult obtenerUsuarios([FromQuery] GetDataInUsuariosVO getData)
         {
             try

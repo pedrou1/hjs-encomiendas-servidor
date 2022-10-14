@@ -138,6 +138,28 @@ namespace hjs_encomiendas_servidor.Dominio
             return result;
         }
 
+        public BaseMethodOut modificarConstraseniaUsuario(UsuarioVO usuarioVO)
+        {
+            BaseMethodOut result = new BaseMethodOut { OperationResult = OperationResult.Success };
+
+            var usuario = obtenerUsuario(usuarioVO.idUsuario);
+
+            if (usuario != null)
+            {
+                if (usuarioVO.password != null)
+                {
+                    string hashedPassword = Utils.hashPassword(usuarioVO.password);
+                    usuario.password = hashedPassword;
+                }
+                context.SaveChanges();
+
+                return result;
+            }
+
+            result.OperationResult = OperationResult.Error;
+            return result;
+        }
+
         public BaseMethodOut eliminarUsuario(int idUsuario)
         {
             BaseMethodOut result = new BaseMethodOut { OperationResult = OperationResult.Success };

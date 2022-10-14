@@ -47,10 +47,12 @@ namespace hjs_encomiendas_servidor.Servicios
 
         }
 
-        [HttpGet("optimizacion")]
-        public JsonResult obtenerRutaOptimizada([FromQuery] GetDataInPedidoVO getData)
+        [HttpPost("optimizacion")]
+        public JsonResult obtenerRutaOptimizada(List<String> addresses)
         {
-            PedidosVO pedidos = dPedido.obtenerOptimizacion(getData);
+            if(addresses == null) return new JsonResult(new { OperationResult = OperationResult.Error });
+            
+            PedidosVO pedidos = dPedido.obtenerOptimizacion(addresses);
 
             JsonResult json = new JsonResult(pedidos);
             return json;
@@ -85,6 +87,15 @@ namespace hjs_encomiendas_servidor.Servicios
             return json;
         }
 
+        [HttpGet("posterior/{idChofer}")]
+        public JsonResult obtenerUltimosPedidos(int idChofer)
+        {
+            PedidosVO? pedido = dPedido.obtenerUltimosPedidos(idChofer);
+
+            JsonResult json = new JsonResult(pedido);
+            return json;
+        }
+
         [HttpPut("modificar")]
         public BaseMethodOut modificarPedido(PedidoVO pedidoVO)
         {
@@ -103,15 +114,15 @@ namespace hjs_encomiendas_servidor.Servicios
             }
         }
 
-        [HttpPut("modificar/estado")]
-        public BaseMethodOut actualizarEstadoPedido(PedidoVO pedidoVO)
+        [HttpPut("modificar/estado/{idPedido}/{estado}")]
+        public BaseMethodOut actualizarEstadoPedido(int idPedido, int estado)
         {
 
-            if (pedidoVO == null) return new BaseMethodOut { OperationResult = OperationResult.Error };
+            if (idPedido == 0) return new BaseMethodOut { OperationResult = OperationResult.Error };
 
             try
             {
-                var result = dPedido.actualizarEstadoPedido(pedidoVO);
+                var result = dPedido.actualizarEstadoPedido(idPedido, estado);
 
                 return result;
             }

@@ -44,6 +44,12 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Pedidos
 
         public float? longitude { get; set; }
 
+        public string? apartamento { get; set; }
+        
+        public string? nroPuerta { get; set; }
+        
+        public string? descripcion { get; set; }
+
         public DateTime? fechaCreacion { get; set; }
 
         public DateTime? fechaRetiro { get; set; }

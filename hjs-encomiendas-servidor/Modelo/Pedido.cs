@@ -32,6 +32,9 @@ namespace hjs_encomiendas_servidor.Modelo
             this.nombreDireccion = pedidoVO.nombreDireccion;
             this.latitude = pedidoVO.latitude;
             this.longitude = pedidoVO.longitude;
+            this.apartamento = pedidoVO.apartamento;
+            this.nroPuerta = pedidoVO.nroPuerta;
+            this.descripcion = pedidoVO.descripcion;
         }
 
         [Key]
@@ -81,6 +84,15 @@ namespace hjs_encomiendas_servidor.Modelo
 
         public float? longitude { get; set; }
 
+        [StringLength(250)]
+        public string? apartamento { get; set; }
+
+        [StringLength(60)]
+        public string? nroPuerta { get; set; }
+
+        [StringLength(250)]
+        public string? descripcion { get; set; }
+
         public DateTime fechaCreacion { get; set; }
 
         public DateTime? fechaRetiro { get; set; }
@@ -110,6 +122,9 @@ namespace hjs_encomiendas_servidor.Modelo
             this.nombreDireccion = pedidoVO.nombreDireccion;
             this.latitude = pedidoVO.latitude;
             this.longitude = pedidoVO.longitude;
+            this.apartamento = pedidoVO.apartamento;
+            this.nroPuerta = pedidoVO.nroPuerta;
+            this.descripcion = pedidoVO.descripcion;
         }
 
     }

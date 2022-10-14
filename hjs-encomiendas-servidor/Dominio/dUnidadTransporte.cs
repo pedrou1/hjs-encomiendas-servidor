@@ -59,6 +59,24 @@ namespace hjs_encomiendas_servidor.Dominio
             return unidadTransporte;
         }
 
+        public BaseMethodOut modificarUnidad(UnidadTransporteVO unidadTransporteVO)
+        {
+            BaseMethodOut result = new BaseMethodOut { OperationResult = OperationResult.Success };
+
+            var unidad = obtenerUnidadTransporte(unidadTransporteVO.idUnidadTransporte);
+
+            if (unidad != null)
+            {
+                unidad.update(unidadTransporteVO);
+                context.SaveChanges();
+
+                return result;
+            }
+
+            result.OperationResult = OperationResult.Error;
+            return result;
+        }
+
         public BaseMethodOut eliminarUnidadTransporte(int idUnidadTransporte)
         {
             BaseMethodOut result = new BaseMethodOut { OperationResult = OperationResult.Success };

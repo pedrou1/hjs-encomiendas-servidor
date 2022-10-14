@@ -86,6 +86,24 @@ namespace hjs_encomiendas_servidor.Servicios
             }
         }
 
+        [HttpPut("modificar")]
+        public BaseMethodOut modificarUnidad(UnidadTransporteVO unidadVO)
+        {
+
+            if (unidadVO == null) return new BaseMethodOut { OperationResult = OperationResult.Error };
+
+            try
+            {
+                var result = dUnidadTransporte.modificarUnidad(unidadVO);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [HttpDelete("{idUnidad}")]
         public BaseMethodOut borrarUnidad(int idUnidad)
         {
