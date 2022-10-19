@@ -69,6 +69,16 @@ namespace hjs_encomiendas_servidor.Servicios
 
         }
 
+        [HttpGet("chofer/dia/estado")]
+        public JsonResult obtenerPedidosDiaTodosChofer([FromQuery] GetDataInPedidoVO getData)
+        {
+            PedidosVO pedidos = dPedido.obtenerPedidosDiaEstadoChofer(getData);
+
+            JsonResult json = new JsonResult(pedidos);
+            return json;
+
+        }
+
         [HttpGet("por-mes")]
         public JsonResult obtenerCantidadPedidosPorMes()
         {

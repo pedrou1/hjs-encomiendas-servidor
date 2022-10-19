@@ -7,5 +7,7 @@
         public int idUsuarioChofer { get; set; } = 0;
 
         public DateTime fecha { get; set; } = DateTime.Now;
+
+        public int estado { get; set; } = 0;
     }
 }

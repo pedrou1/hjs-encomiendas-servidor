@@ -10,10 +10,18 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.UnidadesTransporte
 
         public int promedioConsumo { get; set; }
 
-        public int capacidad { get; set; }
-
         public Usuario? chofer { get; set; }
 
         public int idChofer { get; set; }
+
+        public string marca { get; set; } = "";
+        
+        public string modelo { get; set; } = "";
+
+        public int anio { get; set; }
+        
+        public string padron { get; set; } = "";
+        
+        public string matricula { get; set; } = "";
     }
 }

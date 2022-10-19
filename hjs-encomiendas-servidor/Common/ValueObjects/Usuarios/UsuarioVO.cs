@@ -24,6 +24,12 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Usuarios
 
         public string? telefono { get; set; }
 
+        public string? telefono2 { get; set; }
+        
+        public string? apartamento { get; set; }
+        
+        public string? nroPuerta { get; set; }
+
         public DateTime? fechaCreacion { get; set; }
 
     }

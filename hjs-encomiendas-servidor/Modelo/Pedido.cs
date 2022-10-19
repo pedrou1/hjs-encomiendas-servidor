@@ -21,10 +21,6 @@ namespace hjs_encomiendas_servidor.Modelo
             this.horaLimite = pedidoVO.horaLimite;
             this.orden = pedidoVO.orden;
             this.idTipoPedido = pedidoVO.idTipoPedido;
-            this.tamaño = pedidoVO.tamaño;
-            this.peso = pedidoVO.peso;
-            this.cubicaje = pedidoVO.cubicaje;
-            this.tarifa = pedidoVO.tarifa;
             this.distanciaRecorrida = pedidoVO.distanciaRecorrida;
             this.fechaCreacion = (DateTime)(pedidoVO.fechaCreacion != null ? pedidoVO.fechaCreacion : DateTime.Now);
             this.fechaRetiro = pedidoVO.fechaRetiro;
@@ -66,16 +62,8 @@ namespace hjs_encomiendas_servidor.Modelo
         public string? horaLimite { get; set; }
 
         public int orden { get; set; }
-        
-        public int tamaño { get; set; }
 
-        public int peso { get; set; }
-
-        public int cubicaje { get; set; }
-        
-        public int tarifa { get; set; }
-
-        public int distanciaRecorrida { get; set; }
+        public int? distanciaRecorrida { get; set; }
 
         [StringLength(250)]
         public string? nombreDireccion { get; set; }
@@ -111,10 +99,6 @@ namespace hjs_encomiendas_servidor.Modelo
             this.horaLimite = pedidoVO.horaLimite;
             this.orden = pedidoVO.orden;
             this.idTipoPedido = pedidoVO.idTipoPedido;
-            this.tamaño = pedidoVO.tamaño;
-            this.peso = pedidoVO.peso;
-            this.cubicaje = pedidoVO.cubicaje;
-            this.tarifa = pedidoVO.tarifa;
             this.distanciaRecorrida = pedidoVO.distanciaRecorrida;
             this.fechaCreacion = (DateTime)(pedidoVO.fechaCreacion != null ? pedidoVO.fechaCreacion : DateTime.Now);
             this.fechaRetiro = pedidoVO.fechaRetiro;

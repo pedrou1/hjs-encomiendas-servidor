@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using hjs_encomiendas_servidor.Persistencia;
 
@@ -11,9 +12,10 @@ using hjs_encomiendas_servidor.Persistencia;
 namespace hjs_encomiendas_servidor.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    partial class ProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20221019020304_eliminacionColumnasPedidoUnidad")]
+    partial class eliminacionColumnasPedidoUnidad
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -282,10 +284,6 @@ namespace hjs_encomiendas_servidor.Migrations
                     b.Property<bool>("activo")
                         .HasColumnType("bit");
 
-                    b.Property<string>("apartamento")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
                     b.Property<string>("apellido")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -310,20 +308,12 @@ namespace hjs_encomiendas_servidor.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<string>("nroPuerta")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
                     b.Property<string>("password")
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("telefono")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("telefono2")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 

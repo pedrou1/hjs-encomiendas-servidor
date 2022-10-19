@@ -16,8 +16,12 @@ namespace hjs_encomiendas_servidor.Modelo
             this.idUnidadTransporte = unidadTransporteVO.idUnidadTransporte;
             this.idChofer = unidadTransporteVO.idChofer;
             this.promedioConsumo = unidadTransporteVO.promedioConsumo;
-            this.capacidad = unidadTransporteVO.capacidad;
             this.nombre = unidadTransporteVO.nombre;
+            this.marca = unidadTransporteVO.marca;
+            this.modelo = unidadTransporteVO.modelo;
+            this.anio = unidadTransporteVO.anio;
+            this.padron = unidadTransporteVO.padron;
+            this.matricula = unidadTransporteVO.matricula;
         }
 
         [Key]
@@ -28,26 +32,24 @@ namespace hjs_encomiendas_servidor.Modelo
 
         public int promedioConsumo { get; set; }
 
-        public int capacidad { get; set; }
-
         [ForeignKey("chofer")]
         public int idChofer { get; set; }
 
         public Usuario? chofer { get; set; }
 
         [StringLength(150)]
-        public string marca { get; set; } = "";
+        public string? marca { get; set; } = "";
 
         [StringLength(150)]
-        public string modelo { get; set; } = "";
+        public string? modelo { get; set; } = "";
 
-        public int anio { get; set; }
-
-        [StringLength(150)]
-        public string padron { get; set; } = "";
+        public int? anio { get; set; } = 0;
 
         [StringLength(150)]
-        public string matricula { get; set; } = "";
+        public string? padron { get; set; } = "";
+
+        [StringLength(150)]
+        public string? matricula { get; set; } = "";
 
         [JsonIgnore]
         public bool activo { get; set; } = true;
@@ -56,7 +58,6 @@ namespace hjs_encomiendas_servidor.Modelo
         {
             this.idChofer = unidadTransporteVO.idChofer;
             this.promedioConsumo = unidadTransporteVO.promedioConsumo;
-            this.capacidad = unidadTransporteVO.capacidad;
             this.nombre = unidadTransporteVO.nombre;
 
         }

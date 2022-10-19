@@ -27,14 +27,6 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Pedidos
         public string? horaLimite { get; set; }
 
         public int orden { get; set; }
-        
-        public int tamaño { get; set; }
-
-        public int peso { get; set; }
-
-        public int cubicaje { get; set; }
-
-        public int tarifa { get; set; }
 
         public int distanciaRecorrida { get; set; }
 

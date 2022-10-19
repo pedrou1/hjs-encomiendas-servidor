@@ -42,6 +42,11 @@ namespace hjs_encomiendas_servidor.Dominio
                 qry = qry.Where(collection => collection.idCliente == getData.idUsuarioPedido);
             }
 
+             if (getData.estado != 0) //FIXME ARRAY DE ESTADOS
+            {
+                qry = qry.Where(collection => collection.estado == getData.estado);
+            }
+
             var count = qry.Count();
             var pedidos = qry.OrderBy(p => p.idPedido)
                 .Skip(getData.PageIndex)
@@ -104,6 +109,32 @@ namespace hjs_encomiendas_servidor.Dominio
             else
             {
                 return new PedidosVO { OperationResult = OperationResult.Error };
+            }
+
+            var pedidos = qry.OrderBy(p => p.idPedido).Include(p => p.cliente).Include(p => p.tipoPedido)
+                .ToList();
+
+            PedidosVO usuariosVO = new PedidosVO { pedidos = pedidos, OperationResult = OperationResult.Success };
+
+            return usuariosVO;
+        }
+
+        public PedidosVO obtenerPedidosDiaEstadoChofer(GetDataInPedidoVO getData)
+        {
+            var qry = (from p in context.Pedido where p.activo == true select p);
+
+            if (getData.idUsuarioChofer != 0)
+            {
+                qry = qry.Where(collection => collection.idChofer == getData.idUsuarioChofer && collection.fechaCreacion.Day == getData.fecha.Day);
+            }
+            else
+            {
+                return new PedidosVO { OperationResult = OperationResult.Error };
+            }
+
+            if (getData.estado != 0)
+            {
+                qry = qry.Where(collection => collection.estado == getData.estado);
             }
 
             var pedidos = qry.OrderBy(p => p.idPedido).Include(p => p.cliente).Include(p => p.tipoPedido)

@@ -22,6 +22,9 @@ namespace hjs_encomiendas_servidor.Modelo
             this.telefono = usuarioVO.telefono;
             this.direccion = usuarioVO.direccion;
             this.fechaCreacion = (DateTime)(usuarioVO.fechaCreacion != null ? usuarioVO.fechaCreacion : DateTime.Now);
+            this.telefono2 = usuarioVO.telefono2;
+            this.apartamento = usuarioVO.apartamento;
+            this.nroPuerta = usuarioVO.nroPuerta;
         }
 
         [Key]
@@ -50,6 +53,15 @@ namespace hjs_encomiendas_servidor.Modelo
         [StringLength(150)]
         public string? telefono { get; set; }
 
+        [StringLength(150)]
+        public string? telefono2 { get; set; }
+
+        [StringLength(150)]
+        public string? apartamento { get; set; }
+
+        [StringLength(150)]
+        public string? nroPuerta { get; set; }
+
         [StringLength(250)]
         public string? direccion { get; set; }
 
@@ -67,7 +79,11 @@ namespace hjs_encomiendas_servidor.Modelo
             this.telefono = usuarioVO.telefono;
             this.idCategoria = usuarioVO.categoriaUsuario.idCategoria;
             this.direccion = usuarioVO.direccion;
+            this.telefono2 = usuarioVO.telefono2;
+            this.apartamento = usuarioVO.apartamento;
+            this.nroPuerta = usuarioVO.nroPuerta;
             this.fechaCreacion = (DateTime)(usuarioVO.fechaCreacion != null ? usuarioVO.fechaCreacion : DateTime.Now);
+
         }
 
     }
