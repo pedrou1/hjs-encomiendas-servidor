@@ -6,6 +6,7 @@ using hjs_encomiendas_servidor.Modelo;
 using hjs_encomiendas_servidor.Persistencia;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace hjs_encomiendas_servidor.Servicios
 {
@@ -40,19 +41,13 @@ namespace hjs_encomiendas_servidor.Servicios
         [HttpGet()]
         public JsonResult obtenerPedidos([FromQuery] GetDataInPedidoVO getData)
         {
-            PedidosVO pedidos = dPedido.obtenerPedidos(getData);
-
-            JsonResult json = new JsonResult(pedidos);
-            return json;
-
-        }
-
-        [HttpPost("optimizacion")]
-        public JsonResult obtenerRutaOptimizada(List<String> addresses)
-        {
-            if(addresses == null) return new JsonResult(new { OperationResult = OperationResult.Error });
+            int[] estados = null;
+            if (getData.estados != null)
+            {
+                estados = JsonConvert.DeserializeObject<int[]>(getData.estados);
+            }
             
-            PedidosVO pedidos = dPedido.obtenerOptimizacion(addresses);
+            PedidosVO pedidos = dPedido.obtenerPedidos(getData, estados);
 
             JsonResult json = new JsonResult(pedidos);
             return json;
@@ -101,6 +96,15 @@ namespace hjs_encomiendas_servidor.Servicios
         public JsonResult obtenerUltimosPedidos(int idChofer)
         {
             PedidosVO? pedido = dPedido.obtenerUltimosPedidos(idChofer);
+
+            JsonResult json = new JsonResult(pedido);
+            return json;
+        }
+
+        [HttpGet("retirados/{idChofer}")]
+        public JsonResult obtenerPedidosRetiradosChofer(int idChofer)
+        {
+            PedidosVO? pedido = dPedido.obtenerPedidosRetiradosChofer(idChofer);
 
             JsonResult json = new JsonResult(pedido);
             return json;

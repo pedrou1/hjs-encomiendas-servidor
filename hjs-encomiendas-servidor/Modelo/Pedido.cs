@@ -56,7 +56,7 @@ namespace hjs_encomiendas_servidor.Modelo
 
         public TipoPedido tipoPedido { get; set; }
 
-        public int estado { get; set; }
+        public int estado { get; set; } = 1;
 
         [StringLength(250)]
         public string? horaLimite { get; set; }

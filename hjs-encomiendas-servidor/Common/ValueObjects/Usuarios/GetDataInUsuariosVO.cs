@@ -3,5 +3,7 @@
     public class GetDataInUsuariosVO : GetDataInVO
     {
         public int Tipo { get; set; }
+
+        public string categorias { get; set; } = "";
     }
 }

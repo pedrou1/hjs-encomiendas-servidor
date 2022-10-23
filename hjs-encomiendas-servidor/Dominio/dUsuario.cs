@@ -64,7 +64,7 @@ namespace hjs_encomiendas_servidor.Dominio
             return usuarios;
         }
 
-        public UsuariosVO obtenerUsuarios(GetDataInUsuariosVO getData)
+        public UsuariosVO obtenerUsuarios(GetDataInUsuariosVO getData, int[] categorias)
         {
             var query = (from u in context.Usuarios where u.activo == true select u);
 
@@ -78,12 +78,17 @@ namespace hjs_encomiendas_servidor.Dominio
                     {
                         query = query.Where(collection => EF.Functions.Like(collection.nombre, "%" + filter + "%") 
                         || EF.Functions.Like(collection.apellido, "%" + filter + "%") || (collection.telefono != null && EF.Functions.Like(collection.telefono, "%" + filter + "%"))
-                        || (collection.email != null && EF.Functions.Like(collection.email, "%" + filter + "%")));
+                        || (collection.email != null && EF.Functions.Like(collection.email, "%" + filter + "%")) || (collection.usuario != null && EF.Functions.Like(collection.usuario, "%" + filter + "%")));
                     }
                 }
             }
 
-            if(getData.Tipo != 0)
+            if (categorias != null && categorias.Length > 0)
+            {
+                query = query.Where(collection => categorias.Contains(collection.idCategoria));
+            }
+
+            if (getData.Tipo != 0)
             {
                 query = query.Where(collection => collection.idCategoria == getData.Tipo);
             }
@@ -91,12 +96,86 @@ namespace hjs_encomiendas_servidor.Dominio
             var count = query.Count();
             var usuarios = query.OrderBy(u => u.nombre)
                 .Skip(getData.PageIndex)
-                .Take(getData.PageSize)
+                .Take(getData.PageSize).Include(u => u.categoriaUsuario)
                 .ToList();
 
             UsuariosVO usuariosVO = new UsuariosVO{ usuarios = usuarios, totalRows = count, OperationResult = OperationResult.Success };
-
+            
             return usuariosVO;
+        }
+
+        public UsuariosVO obtenerUsuariosCantidadPedidos(GetDataInUsuariosVO getData)
+        {
+            List<UsuariosInformeVO?> usuariosInformeOut = new List<UsuariosInformeVO?>();
+            int total = 0;
+            if (getData.Tipo == 1)
+            {
+                var query = (from u in context.Usuarios
+                             where u.activo == true && u != null
+                             join p in context.Pedido on u.idUsuario equals p.idCliente
+                             where p.activo == true && p != null
+                             group u by p.idCliente into g
+                             orderby g.Count() descending
+                             select new UsuariosInformeVO
+                             {
+                                 usuario = g.FirstOrDefault(),
+                                 cantidadPedidos = g.Count()
+                             });
+
+                total = countInformeUsuarios(getData.Tipo);
+                usuariosInformeOut = query.Skip(getData.PageIndex).Take(getData.PageSize).ToList();
+
+            }
+            else
+            {
+                var query = (from u in context.Usuarios
+                             where u.activo == true && u != null
+                             join p in context.Pedido on u.idUsuario equals p.idChofer
+                             where p.activo == true && p != null
+                             group u by p.idChofer into g
+                             orderby g.Count() descending
+                             select new UsuariosInformeVO
+                             {
+                                 usuario = g.FirstOrDefault(),
+                                 cantidadPedidos = g.Count()
+                             });
+
+                total = countInformeUsuarios(getData.Tipo);
+                usuariosInformeOut = query.Skip(getData.PageIndex).Take(getData.PageSize).ToList();
+
+            }
+
+            UsuariosVO usuariosVO = new UsuariosVO { usuariosInforme = usuariosInformeOut, totalRows = total, OperationResult = OperationResult.Success };
+            
+            return usuariosVO;
+        }
+
+        public int countInformeUsuarios(int tipo)
+        {
+            List<UsuariosInformeVO?> usuariosInformeOut = new List<UsuariosInformeVO?>();
+            int total = 0;
+
+            if(tipo == 1) {
+                var query = (from u in context.Usuarios
+                             where u.activo == true && u != null
+                             join p in context.Pedido on u.idUsuario equals p.idCliente
+                             where p.activo == true && p != null
+                             select u).GroupBy(x => x.idUsuario);
+
+                total = query.Count();
+            }
+            else
+            {
+                var query = (from u in context.Usuarios
+                             where u.activo == true && u != null
+                             join p in context.Pedido on u.idUsuario equals p.idChofer
+                             where p.activo == true && p != null
+                             select u).GroupBy(x => x.idUsuario);
+
+                total = query.Count();
+            }
+            
+            return total;
         }
 
         public Usuario? obtenerUsuario(int idUsuario)
@@ -124,7 +203,7 @@ namespace hjs_encomiendas_servidor.Dominio
 
             if (usuario != null)
             {
-                if (usuarioVO.password != null) { 
+                if (usuarioVO.password != null && usuarioVO.password != "") { 
                 string hashedPassword = Utils.hashPassword(usuarioVO.password);
                 usuario.password = hashedPassword;
                 }

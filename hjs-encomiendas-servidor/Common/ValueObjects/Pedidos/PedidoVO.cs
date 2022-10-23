@@ -26,7 +26,7 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Pedidos
 
         public string? horaLimite { get; set; }
 
-        public int orden { get; set; }
+        public int orden { get; set; } = 1;
 
         public int distanciaRecorrida { get; set; }
 

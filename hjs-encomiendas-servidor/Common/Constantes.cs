@@ -3,8 +3,9 @@
     public enum Constantes
     {
        ESTADO_PEDIDO_PENDIENTE = 1,
-       ESTADO_PEDIDO_EN_PROCESO = 2,
+       ESTADO_PEDIDO_RETIRADO = 2,
        ESTADO_PEDIDO_ENTREGADO = 3,
+       ESTADO_PEDIDO_CANCELADO = 3,
 
 
     }

@@ -33,22 +33,32 @@ namespace hjs_encomiendas_servidor.Dominio
             return new BaseMethodOut { OperationResult = OperationResult.Success };
         }
 
-        public PedidosVO obtenerPedidos(GetDataInPedidoVO getData)
+        public PedidosVO obtenerPedidos(GetDataInPedidoVO getData, int[] estados)
         {
             var qry = (from p in context.Pedido where p.activo == true select p);
 
             if (getData.idUsuarioPedido != 0)
             {
-                qry = qry.Where(collection => collection.idCliente == getData.idUsuarioPedido);
+                qry = qry.Where(collection => collection.idCliente == getData.idUsuarioPedido || collection.idChofer == getData.idUsuarioPedido);
+            }
+            
+            if (getData.fechaDesde != null && getData.fechaHasta != null)
+            {
+                qry = qry.Where(collection => collection.fechaCreacion >= getData.fechaDesde && collection.fechaCreacion <= getData.fechaHasta);
+            }
+            
+            if (getData.idUnidad != 0)
+            {
+                qry = qry.Where(collection => collection.idTransporte == getData.idUnidad);
             }
 
-             if (getData.estado != 0) //FIXME ARRAY DE ESTADOS
+            if (estados != null && estados.Length > 0)
             {
-                qry = qry.Where(collection => collection.estado == getData.estado);
+                qry = qry.Where(collection => estados.Contains(collection.estado));
             }
 
             var count = qry.Count();
-            var pedidos = qry.OrderBy(p => p.idPedido)
+            var pedidos = qry.OrderBy(p => p.fechaCreacion)
                 .Skip(getData.PageIndex)
                 .Take(getData.PageSize).Include(p => p.chofer).Include(p => p.cliente).Include(p => p.transporte).Include(p => p.tipoPedido)
                 .ToList();
@@ -77,6 +87,25 @@ namespace hjs_encomiendas_servidor.Dominio
 
                 pedidosVO = new PedidosVO { pedidos = pedidos, totalRows = count, OperationResult = OperationResult.Success };
             }
+
+            return pedidosVO;
+        }
+
+        public PedidosVO obtenerPedidosRetiradosChofer(int idChofer)
+        {
+            PedidosVO pedidosVO = new PedidosVO { OperationResult = OperationResult.Error };
+            if (idChofer == 0) return pedidosVO;
+            
+           
+                var qry = (from p in context.Pedido where p.activo == true select p);
+
+                qry = qry.Where(p => p.idChofer == idChofer && p.estado == ((int)Constantes.ESTADO_PEDIDO_RETIRADO));
+
+                var count = qry.Count();
+                var pedidos = qry.OrderByDescending(p => p.fechaCreacion).Include(p => p.cliente).Include(p => p.transporte).Include(p => p.tipoPedido)
+                    .ToList();
+
+                pedidosVO = new PedidosVO { pedidos = pedidos, totalRows = count, OperationResult = OperationResult.Success };
 
             return pedidosVO;
         }
@@ -197,6 +226,14 @@ namespace hjs_encomiendas_servidor.Dominio
             if (pedido != null)
             {
                 pedido.estado = estado;
+                if(estado == ((int)Constantes.ESTADO_PEDIDO_RETIRADO))
+                {
+                    pedido.fechaRetiro = DateTime.Now;
+                } else if(estado == ((int)Constantes.ESTADO_PEDIDO_ENTREGADO))
+                {
+                    pedido.fechaEntrega = DateTime.Now;
+                }
+                    
                 context.SaveChanges();
 
                 return result;
@@ -204,77 +241,6 @@ namespace hjs_encomiendas_servidor.Dominio
 
             result.OperationResult = OperationResult.Error;
             return result;
-        }
-
-        public PedidosVO obtenerOptimizacion(List<String> addresses)
-        {
-            HttpClient client = new HttpClient();
-            JsonSerializerOptions jso = new JsonSerializerOptions
-            {
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-                WriteIndented = true
-            };
-
-
-            var json = JsonSerializer.Serialize(addresses, jso);
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Post,
-                RequestUri = new Uri("url"),
-
-                Content = new StringContent(json, Encoding.UTF8, "application/json")
-            };
-
-            var response = client.SendAsync(request).ConfigureAwait(true);
-
-            var responseInfo = response.GetAwaiter().GetResult();
-
-            if (!responseInfo.IsSuccessStatusCode)
-            {
-                return new PedidosVO { OperationResult = OperationResult.Error };
-            }
-            
-            var responseString = responseInfo.Content.ReadAsStringAsync().Result;
-            
-            long[][] distanceMatrixjs = JsonSerializer.Deserialize<long[][]>(responseString);
-            
-            // Instantiate the data problem.
-            DataModel data = new DataModel();
-            data.DistanceMatrix = distanceMatrixjs;
-            
-            // Create Routing Index Manager
-            RoutingIndexManager manager =
-                new RoutingIndexManager(data.DistanceMatrix.GetLength(0), data.VehicleNumber, data.Depot);
-
-            // Create Routing Model.
-            RoutingModel routing = new RoutingModel(manager);
-
-            int transitCallbackIndex = routing.RegisterTransitCallback((long fromIndex, long toIndex) =>
-            {
-                // Convert from routing variable Index to
-                // distance matrix NodeIndex.
-                var fromNode = manager.IndexToNode(fromIndex);
-                var toNode = manager.IndexToNode(toIndex);
-                return data.DistanceMatrix[fromNode][toNode];
-            });
-
-            // Define cost of each arc.
-            routing.SetArcCostEvaluatorOfAllVehicles(transitCallbackIndex);
-
-            // Setting first solution heuristic.
-            RoutingSearchParameters searchParameters =
-                operations_research_constraint_solver.DefaultRoutingSearchParameters();
-            searchParameters.FirstSolutionStrategy = FirstSolutionStrategy.Types.Value.PathCheapestArc;
-
-            // Solve the problem.
-            Assignment solution = routing.SolveWithParameters(searchParameters);
-            
-            // Se formatea la solucion en list<int>
-            List<int> orden = FormatSolution(routing, manager, solution);
-
-            PedidosVO usuariosVO = new PedidosVO { ordenPedidos = orden, OperationResult = OperationResult.Success };
-
-            return usuariosVO;
         }
 
         public List<int> obtenerCantidadPedidosPorMes()
@@ -286,33 +252,7 @@ namespace hjs_encomiendas_servidor.Dominio
 
             return query;
         }
-
-
-
-        class DataModel
-        {
-            public long[][] DistanceMatrix = new long[][]
-            {
-            };
-
-            public int VehicleNumber = 1;
-            public int Depot = 0;
-        };
-        static List<int> FormatSolution(in RoutingModel routing, in RoutingIndexManager manager, in Assignment solution)
-        {
-            List<int> sol = new List<int>();
-            long routeDistance = 0;
-            var index = routing.Start(0);
-            while (routing.IsEnd(index) == false)
-            {
-                sol.Add(manager.IndexToNode((int)index));
-                var previousIndex = index;
-                index = solution.Value(routing.NextVar(index));
-                routeDistance += routing.GetArcCostForVehicle(previousIndex, index, 0);
-            }
-            sol.Add(manager.IndexToNode((int)index));
-
-            return sol;
-        }
+        
+       
     }
 }

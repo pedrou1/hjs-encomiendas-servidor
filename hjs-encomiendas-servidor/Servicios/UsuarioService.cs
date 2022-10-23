@@ -6,6 +6,7 @@ using hjs_encomiendas_servidor.Modelo;
 using hjs_encomiendas_servidor.Persistencia;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Data;
 using System.Text.Json;
 
@@ -118,7 +119,31 @@ namespace hjs_encomiendas_servidor.Servicios
         {
             try
             {
-                UsuariosVO usuarios = dUsuario.obtenerUsuarios(getData);
+                int[] categorias = null;
+                if (getData.categorias != null)
+                {
+                    categorias = JsonConvert.DeserializeObject<int[]>(getData.categorias);
+                }
+                
+                UsuariosVO usuarios = dUsuario.obtenerUsuarios(getData, categorias);
+
+                JsonResult json = new JsonResult(usuarios);
+
+                return json;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        [HttpGet("cantidad/pedidos")]
+        public JsonResult obtenerUsuariosCantidadPedidos([FromQuery] GetDataInUsuariosVO getData)
+        {
+            try
+            {
+                UsuariosVO usuarios = dUsuario.obtenerUsuariosCantidadPedidos(getData);
 
                 JsonResult json = new JsonResult(usuarios);
 
