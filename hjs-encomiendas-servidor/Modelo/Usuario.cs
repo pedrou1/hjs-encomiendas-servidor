@@ -25,6 +25,8 @@ namespace hjs_encomiendas_servidor.Modelo
             this.telefono2 = usuarioVO.telefono2;
             this.apartamento = usuarioVO.apartamento;
             this.nroPuerta = usuarioVO.nroPuerta;
+            this.ci = usuarioVO.ci;
+            this.rut = usuarioVO.rut;
         }
 
         [Key]
@@ -40,6 +42,12 @@ namespace hjs_encomiendas_servidor.Modelo
 
         [StringLength(250), JsonIgnore]
         public string password { get; set; }
+
+        [StringLength(20)]
+        public string ci { get; set; }
+
+        [StringLength(20)]
+        public string rut { get; set; }
 
         [StringLength(150)]
         public string nombre { get; set; }
@@ -83,7 +91,8 @@ namespace hjs_encomiendas_servidor.Modelo
             this.apartamento = usuarioVO.apartamento;
             this.nroPuerta = usuarioVO.nroPuerta;
             this.fechaCreacion = (DateTime)(usuarioVO.fechaCreacion != null ? usuarioVO.fechaCreacion : DateTime.Now);
-
+            this.ci = usuarioVO.ci;
+            this.rut = usuarioVO.rut;
         }
 
     }

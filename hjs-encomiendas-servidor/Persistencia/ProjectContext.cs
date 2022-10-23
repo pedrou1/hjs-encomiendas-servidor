@@ -11,16 +11,12 @@ namespace hjs_encomiendas_servidor.Persistencia
         }
         
         public DbSet<Usuario> Usuarios { get; set; }
-
+        
         public DbSet<CategoriaUsuario> CategoriaUsuario { get; set; }
 
         public DbSet<UnidadTransporte> UnidadTransporte { get; set; }
-        
-        public DbSet<Estado> Estado { get; set; }
 
         public DbSet<Pedido> Pedido { get; set; }
-
-        public DbSet<EstadoPedido> EstadoPedido { get; set; }
 
         public DbSet<TipoPedido> TipoPedido { get; set; }
 
