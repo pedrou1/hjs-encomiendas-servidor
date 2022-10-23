@@ -63,7 +63,7 @@ namespace hjs_encomiendas_servidor.Servicios
 
                 if (usuario == null) return result;
 
-                if (dUsuario.existeNombreUsuario(usuario.usuario)) {
+                if (usuario.usuario != "" && dUsuario.existeNombreUsuario(usuario.usuario)) {
                     result.OperationResult = OperationResult.UsernameAlreadyExist;
                     return result;
                 }
@@ -86,6 +86,12 @@ namespace hjs_encomiendas_servidor.Servicios
 
             try
             {
+
+                if (usuario.usuario != "" && dUsuario.obtenerExisteUsuarioPorUsuario(usuario.idUsuario, usuario.usuario))
+                {
+                    return new BaseMethodOut { OperationResult = OperationResult.UsernameAlreadyExist };
+                }
+                
                 var result = dUsuario.modificarUsuario(usuario);
 
                 return result;

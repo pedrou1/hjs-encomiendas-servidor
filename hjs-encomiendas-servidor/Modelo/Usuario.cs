@@ -44,10 +44,10 @@ namespace hjs_encomiendas_servidor.Modelo
         public string password { get; set; }
 
         [StringLength(20)]
-        public string ci { get; set; }
+        public string? ci { get; set; }
 
         [StringLength(20)]
-        public string rut { get; set; }
+        public string? rut { get; set; }
 
         [StringLength(150)]
         public string nombre { get; set; }

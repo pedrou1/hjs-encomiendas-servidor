@@ -195,6 +195,14 @@ namespace hjs_encomiendas_servidor.Dominio
             return exists;
         }
 
+        public bool obtenerExisteUsuarioPorUsuario(int idUsuario, String usuarioIn)
+        {
+
+            bool exists = context.Usuarios.Any(u => u.usuario == usuarioIn && u.idUsuario != idUsuario && u.activo == true);
+
+            return exists;
+        }
+
         public BaseMethodOut modificarUsuario(UsuarioVO usuarioVO)
         {
             BaseMethodOut result = new BaseMethodOut { OperationResult = OperationResult.Success };
