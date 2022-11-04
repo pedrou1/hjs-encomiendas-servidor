@@ -23,5 +23,13 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.UnidadesTransporte
         public string padron { get; set; } = "";
         
         public string matricula { get; set; } = "";
+
+        public DateTime? vtoSeguro { get; set; }
+
+        public DateTime? vtoPatente { get; set; }
+
+        public DateTime? vtoMinisterio { get; set; }
+
+        public DateTime? vtoApplus { get; set; }
     }
 }

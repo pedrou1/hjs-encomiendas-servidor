@@ -7,5 +7,7 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Pedidos
         public List<Pedido>? pedidos { get; set; }
 
         public List<int>? ordenPedidos { get; set; }
+
+        public int? distanciaRecorrida { get; set; }
     }
 }

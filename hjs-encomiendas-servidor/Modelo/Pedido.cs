@@ -22,8 +22,8 @@ namespace hjs_encomiendas_servidor.Modelo
             this.orden = pedidoVO.orden;
             this.idTipoPedido = pedidoVO.idTipoPedido;
             this.distanciaRecorrida = pedidoVO.distanciaRecorrida;
-            this.fechaCreacion = (DateTime)(pedidoVO.fechaCreacion != null ? pedidoVO.fechaCreacion : DateTime.Now);
-            this.fechaRetiro = pedidoVO.fechaRetiro;
+            this.fechaRetiro = (DateTime)(pedidoVO.fechaRetiro != null ? pedidoVO.fechaRetiro : DateTime.Now);
+            this.fechaRetirado = pedidoVO.fechaRetirado;
             this.fechaEntrega = pedidoVO.fechaEntrega;
             this.nombreDireccion = pedidoVO.nombreDireccion;
             this.latitude = pedidoVO.latitude;
@@ -31,6 +31,8 @@ namespace hjs_encomiendas_servidor.Modelo
             this.apartamento = pedidoVO.apartamento;
             this.nroPuerta = pedidoVO.nroPuerta;
             this.descripcion = pedidoVO.descripcion;
+            this.reservado = pedidoVO.reservado;
+            this.activo = pedidoVO.activo;
         }
 
         [Key]
@@ -65,7 +67,7 @@ namespace hjs_encomiendas_servidor.Modelo
 
         public int? distanciaRecorrida { get; set; }
 
-        [StringLength(250)]
+        [StringLength(1000)]
         public string? nombreDireccion { get; set; }
 
         public float? latitude { get; set; }
@@ -81,9 +83,11 @@ namespace hjs_encomiendas_servidor.Modelo
         [StringLength(250)]
         public string? descripcion { get; set; }
 
-        public DateTime fechaCreacion { get; set; }
+        public bool reservado { get; set; } = false;
 
-        public DateTime? fechaRetiro { get; set; }
+        public DateTime fechaRetiro { get; set; }
+
+        public DateTime? fechaRetirado { get; set; }
 
         public DateTime? fechaEntrega { get; set; }
 
@@ -100,8 +104,8 @@ namespace hjs_encomiendas_servidor.Modelo
             this.orden = pedidoVO.orden;
             this.idTipoPedido = pedidoVO.idTipoPedido;
             this.distanciaRecorrida = pedidoVO.distanciaRecorrida;
-            this.fechaCreacion = (DateTime)(pedidoVO.fechaCreacion != null ? pedidoVO.fechaCreacion : DateTime.Now);
-            this.fechaRetiro = pedidoVO.fechaRetiro;
+            this.fechaRetiro = (DateTime)(pedidoVO.fechaRetiro != null ? pedidoVO.fechaRetiro : DateTime.Now);
+            this.fechaRetirado = pedidoVO.fechaRetirado;
             this.fechaEntrega = pedidoVO.fechaEntrega;
             this.nombreDireccion = pedidoVO.nombreDireccion;
             this.latitude = pedidoVO.latitude;
@@ -109,6 +113,8 @@ namespace hjs_encomiendas_servidor.Modelo
             this.apartamento = pedidoVO.apartamento;
             this.nroPuerta = pedidoVO.nroPuerta;
             this.descripcion = pedidoVO.descripcion;
+            this.reservado = pedidoVO.reservado;
+            this.activo = pedidoVO.activo;
         }
 
     }

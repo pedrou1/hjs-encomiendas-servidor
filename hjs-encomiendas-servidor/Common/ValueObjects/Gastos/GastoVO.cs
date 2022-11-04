@@ -10,7 +10,7 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Gastos
 
         public Usuario? usuario { get; set; }
         
-        public int idTransporte { get; set; }
+        public int? idTransporte { get; set; }
 
         public UnidadTransporte? transporte { get; set; }
 

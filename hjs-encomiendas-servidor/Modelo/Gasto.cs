@@ -30,9 +30,9 @@ namespace hjs_encomiendas_servidor.Modelo
         public Usuario usuario { get; set; }
         
         [ForeignKey("transporte")]
-        public int idTransporte { get; set; }
+        public int? idTransporte { get; set; }
 
-        public UnidadTransporte transporte { get; set; }
+        public UnidadTransporte? transporte { get; set; }
 
         [StringLength(250)]
         public string descripcion { get; set; }

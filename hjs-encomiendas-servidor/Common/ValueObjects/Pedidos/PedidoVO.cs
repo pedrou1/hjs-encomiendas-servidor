@@ -42,11 +42,15 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Pedidos
         
         public string? descripcion { get; set; }
 
-        public DateTime? fechaCreacion { get; set; }
-
+        public bool reservado { get; set; } = false;
+        
         public DateTime? fechaRetiro { get; set; }
 
+        public DateTime? fechaRetirado { get; set; }
+
         public DateTime? fechaEntrega { get; set; }
+
+        public bool activo { get; set; } = true;
 
     }
 }

@@ -36,5 +36,7 @@ namespace hjs_encomiendas_servidor.Common.ValueObjects.Usuarios
 
         public DateTime? fechaCreacion { get; set; }
 
+        public UnidadTransporte? unidadTransporte { get; set; }
+
     }
 }

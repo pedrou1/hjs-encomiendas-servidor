@@ -54,6 +54,17 @@ namespace hjs_encomiendas_servidor.Servicios
 
         }
 
+        [HttpGet("reservados")]
+        public JsonResult obtenerPedidosReservados([FromQuery] GetDataInPedidoVO getData)
+        {
+
+            PedidosVO pedidos = dPedido.obtenerPedidosReservados(getData);
+
+            JsonResult json = new JsonResult(pedidos);
+            return json;
+
+        }
+
         [HttpGet("chofer")]
         public JsonResult obtenerPedidosChofer([FromQuery] GetDataInPedidoVO getData)
         {
@@ -74,10 +85,10 @@ namespace hjs_encomiendas_servidor.Servicios
 
         }
 
-        [HttpGet("por-mes")]
-        public JsonResult obtenerCantidadPedidosPorMes()
+        [HttpGet("por-mes/{anio}")]
+        public JsonResult obtenerCantidadPedidosPorMes(int anio)
         {
-            List<int> cantidadPedidos = dPedido.obtenerCantidadPedidosPorMes();
+            List<int> cantidadPedidos = dPedido.obtenerCantidadPedidosPorMes(anio);
 
             JsonResult json = new JsonResult(cantidadPedidos);
             return json;
@@ -128,15 +139,15 @@ namespace hjs_encomiendas_servidor.Servicios
             }
         }
 
-        [HttpPut("modificar/estado/{idPedido}/{estado}")]
-        public BaseMethodOut actualizarEstadoPedido(int idPedido, int estado)
+        [HttpPut("modificar/estado/{idPedido}/{estado}/{distancia}")]
+        public BaseMethodOut actualizarEstadoPedido(int idPedido, int estado, int distancia)
         {
 
             if (idPedido == 0) return new BaseMethodOut { OperationResult = OperationResult.Error };
 
             try
             {
-                var result = dPedido.actualizarEstadoPedido(idPedido, estado);
+                var result = dPedido.actualizarEstadoPedido(idPedido, estado, distancia);
 
                 return result;
             }

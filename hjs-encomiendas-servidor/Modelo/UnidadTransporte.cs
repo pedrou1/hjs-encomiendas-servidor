@@ -22,6 +22,10 @@ namespace hjs_encomiendas_servidor.Modelo
             this.anio = unidadTransporteVO.anio;
             this.padron = unidadTransporteVO.padron;
             this.matricula = unidadTransporteVO.matricula;
+            this.vtoSeguro = unidadTransporteVO.vtoSeguro;
+            this.vtoPatente = unidadTransporteVO.vtoPatente;
+            this.vtoMinisterio = unidadTransporteVO.vtoMinisterio;
+            this.vtoApplus = unidadTransporteVO.vtoApplus;
         }
 
         [Key]
@@ -51,6 +55,14 @@ namespace hjs_encomiendas_servidor.Modelo
         [StringLength(150)]
         public string? matricula { get; set; } = "";
 
+        public DateTime? vtoSeguro { get; set; }
+
+        public DateTime? vtoPatente { get; set; }
+
+        public DateTime? vtoMinisterio { get; set; }
+
+        public DateTime? vtoApplus { get; set; }
+
         [JsonIgnore]
         public bool activo { get; set; } = true;
 
@@ -59,7 +71,15 @@ namespace hjs_encomiendas_servidor.Modelo
             this.idChofer = unidadTransporteVO.idChofer;
             this.promedioConsumo = unidadTransporteVO.promedioConsumo;
             this.nombre = unidadTransporteVO.nombre;
-
+            this.marca = unidadTransporteVO.marca;
+            this.modelo = unidadTransporteVO.modelo;
+            this.anio = unidadTransporteVO.anio;
+            this.padron = unidadTransporteVO.padron;
+            this.matricula = unidadTransporteVO.matricula;
+            this.vtoSeguro = unidadTransporteVO.vtoSeguro;
+            this.vtoPatente = unidadTransporteVO.vtoPatente;
+            this.vtoMinisterio = unidadTransporteVO.vtoMinisterio;
+            this.vtoApplus = unidadTransporteVO.vtoApplus;
         }
 
     }

@@ -40,7 +40,7 @@ namespace hjs_encomiendas_servidor.Modelo
         [StringLength(250)]
         public string usuario { get; set; }
 
-        [StringLength(250), JsonIgnore]
+        [StringLength(1000), JsonIgnore]
         public string password { get; set; }
 
         [StringLength(20)]

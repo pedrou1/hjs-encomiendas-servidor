@@ -18,7 +18,7 @@ builder.Services.AddDbContext<ProjectContext>(options =>
     options
         .UseSqlServer(builder.Configuration.GetConnectionString("hjsConnection")));
 
-// Agregar solo en produccion
+// FIXME: Agregar solo en produccion
 /*builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {
     builder.WithOrigins("{URL FRONT}")
@@ -33,7 +33,7 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
            .AllowAnyHeader();
 }));
 
-var tokenKey = builder.Configuration.GetValue<string>("TokenKey");
+var tokenKey = builder.Configuration.GetValue<string>("TokenKey"); // FIXME: UTILIZAR ESTA LINEA EN PRODUCCION
 var key = Encoding.ASCII.GetBytes(tokenKey);
 
 builder.Services.AddAuthentication(x =>
@@ -60,11 +60,12 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseCors("MyPolicy");
-
 app.UseRouting();
 
+app.UseCors("MyPolicy");
+
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>

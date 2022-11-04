@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using hjs_encomiendas_servidor.Persistencia;
 
@@ -11,9 +12,10 @@ using hjs_encomiendas_servidor.Persistencia;
 namespace hjs_encomiendas_servidor.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    partial class ProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20221028032752_reservaPedido")]
+    partial class reservaPedido
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,7 +64,7 @@ namespace hjs_encomiendas_servidor.Migrations
                     b.Property<DateTime>("fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("idTransporte")
+                    b.Property<int>("idTransporte")
                         .HasColumnType("int");
 
                     b.Property<int>("idUsuario")
@@ -102,13 +104,13 @@ namespace hjs_encomiendas_servidor.Migrations
                     b.Property<int>("estado")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("fechaCreacion")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("fechaEntrega")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("fechaRetirado")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("fechaRetiro")
+                    b.Property<DateTime?>("fechaRetiro")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("horaLimite")
@@ -231,18 +233,6 @@ namespace hjs_encomiendas_servidor.Migrations
                     b.Property<int>("promedioConsumo")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("vtoApplus")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("vtoMinisterio")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("vtoPatente")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("vtoSeguro")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("idUnidadTransporte");
 
                     b.HasIndex("idChofer");
@@ -330,7 +320,9 @@ namespace hjs_encomiendas_servidor.Migrations
                 {
                     b.HasOne("hjs_encomiendas_servidor.Modelo.UnidadTransporte", "transporte")
                         .WithMany()
-                        .HasForeignKey("idTransporte");
+                        .HasForeignKey("idTransporte")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("hjs_encomiendas_servidor.Modelo.Usuario", "usuario")
                         .WithMany()

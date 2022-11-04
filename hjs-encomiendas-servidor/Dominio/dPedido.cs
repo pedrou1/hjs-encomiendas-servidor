@@ -44,7 +44,7 @@ namespace hjs_encomiendas_servidor.Dominio
             
             if (getData.fechaDesde != null && getData.fechaHasta != null)
             {
-                qry = qry.Where(collection => collection.fechaCreacion >= getData.fechaDesde && collection.fechaCreacion <= getData.fechaHasta);
+                qry = qry.Where(collection => collection.fechaRetiro >= getData.fechaDesde && collection.fechaRetiro <= getData.fechaHasta);
             }
             
             if (getData.idUnidad != 0)
@@ -58,7 +58,33 @@ namespace hjs_encomiendas_servidor.Dominio
             }
 
             var count = qry.Count();
-            var pedidos = qry.OrderBy(p => p.fechaCreacion)
+            var pedidos = qry.OrderBy(p => p.fechaRetiro)
+                .Skip(getData.PageIndex)
+                .Take(getData.PageSize).Include(p => p.chofer).Include(p => p.cliente).Include(p => p.transporte).Include(p => p.tipoPedido)
+                .ToList();
+            
+            int distanciaRecorrida = 0;
+            if (getData.idUnidad != 0 && getData.fechaDesde != null && getData.fechaHasta != null)
+            {
+                var query = (from p in context.Pedido where p.activo == true && p != null && p.idTransporte == getData.idUnidad
+                             && p.fechaRetiro >= getData.fechaDesde && p.fechaRetiro <= getData.fechaHasta select p.distanciaRecorrida).Sum();
+                if (query != null)
+                {
+                    distanciaRecorrida = (int)query;
+                }
+            }
+
+            PedidosVO usuariosVO = new PedidosVO { pedidos = pedidos, totalRows = count, OperationResult = OperationResult.Success, distanciaRecorrida = distanciaRecorrida };
+
+            return usuariosVO;
+        }
+
+        public PedidosVO obtenerPedidosReservados(GetDataInPedidoVO getData)
+        {
+            var qry = (from p in context.Pedido where p.activo == false && p.estado == ((int)Constantes.ESTADO_PEDIDO_PENDIENTE) && p.reservado == true select p);
+            
+            var count = qry.Count();
+            var pedidos = qry.OrderBy(p => p.fechaRetiro)
                 .Skip(getData.PageIndex)
                 .Take(getData.PageSize).Include(p => p.chofer).Include(p => p.cliente).Include(p => p.transporte).Include(p => p.tipoPedido)
                 .ToList();
@@ -73,16 +99,16 @@ namespace hjs_encomiendas_servidor.Dominio
             PedidosVO pedidosVO = new PedidosVO { OperationResult = OperationResult.Error };
             if (idChofer == 0) return pedidosVO;
 
-            var ultimoPedidoChofer = context.Pedido.Where(p => p.idChofer == idChofer && p.activo == true && p.fechaCreacion.Day != DateTime.Now.Day).OrderByDescending(p => p.fechaCreacion)
+            var ultimoPedidoChofer = context.Pedido.Where(p => p.idChofer == idChofer && p.activo == true && p.fechaRetiro.Day != DateTime.Now.Day).OrderByDescending(p => p.fechaRetiro)
                        .FirstOrDefault();
             if (ultimoPedidoChofer != null)
             {
                 var qry = (from p in context.Pedido where p.activo == true select p);
 
-                qry = qry.Where(p => p.idChofer == idChofer && p.fechaCreacion.Day == ultimoPedidoChofer.fechaCreacion.Day);
+                qry = qry.Where(p => p.idChofer == idChofer && p.fechaRetiro.Day == ultimoPedidoChofer.fechaRetiro.Day);
 
                 var count = qry.Count();
-                var pedidos = qry.OrderBy(p => p.fechaCreacion).Include(p => p.cliente).Include(p => p.transporte).Include(p => p.tipoPedido)
+                var pedidos = qry.OrderBy(p => p.fechaRetiro).Include(p => p.cliente).Include(p => p.transporte).Include(p => p.tipoPedido)
                     .ToList();
 
                 pedidosVO = new PedidosVO { pedidos = pedidos, totalRows = count, OperationResult = OperationResult.Success };
@@ -102,7 +128,7 @@ namespace hjs_encomiendas_servidor.Dominio
                 qry = qry.Where(p => p.idChofer == idChofer && p.estado == ((int)Constantes.ESTADO_PEDIDO_RETIRADO));
 
                 var count = qry.Count();
-                var pedidos = qry.OrderByDescending(p => p.fechaCreacion).Include(p => p.cliente).Include(p => p.transporte).Include(p => p.tipoPedido)
+                var pedidos = qry.OrderByDescending(p => p.fechaRetiro).Include(p => p.cliente).Include(p => p.transporte).Include(p => p.tipoPedido)
                     .ToList();
 
                 pedidosVO = new PedidosVO { pedidos = pedidos, totalRows = count, OperationResult = OperationResult.Success };
@@ -117,9 +143,9 @@ namespace hjs_encomiendas_servidor.Dominio
             
                 var qry = (from p in context.Pedido where p.activo == true select p);
 
-                qry = qry.Where(p => p.idChofer == idChofer && p.fechaCreacion.Day == DateTime.Now.Day);
+                qry = qry.Where(p => p.idChofer == idChofer && p.fechaRetiro.Day == DateTime.Now.Day);
             
-                var pedidos = qry.OrderBy(p => p.fechaCreacion).Include(p => p.cliente).Include(p => p.transporte).Include(p => p.tipoPedido)
+                var pedidos = qry.OrderBy(p => p.fechaRetiro).Include(p => p.cliente).Include(p => p.transporte).Include(p => p.tipoPedido)
                     .ToList();
 
                 pedidosVO = new PedidosVO { pedidos = pedidos, totalRows = 0, OperationResult = OperationResult.Success };
@@ -133,7 +159,7 @@ namespace hjs_encomiendas_servidor.Dominio
 
             if (getData.idUsuarioChofer != 0)
             {
-                qry = qry.Where(collection => collection.idChofer == getData.idUsuarioChofer && collection.fechaCreacion.Day == getData.fecha.Day && collection.estado == ((int) Constantes.ESTADO_PEDIDO_PENDIENTE));
+                qry = qry.Where(collection => collection.idChofer == getData.idUsuarioChofer && collection.estado == ((int) Constantes.ESTADO_PEDIDO_PENDIENTE));
             }
             else
             {
@@ -154,7 +180,7 @@ namespace hjs_encomiendas_servidor.Dominio
 
             if (getData.idUsuarioChofer != 0)
             {
-                qry = qry.Where(collection => collection.idChofer == getData.idUsuarioChofer && collection.fechaCreacion.Day == getData.fecha.Day);
+                qry = qry.Where(collection => collection.idChofer == getData.idUsuarioChofer && collection.fechaRetiro.Day == getData.fecha.Day);
             }
             else
             {
@@ -176,7 +202,7 @@ namespace hjs_encomiendas_servidor.Dominio
 
         public Pedido? obtenerPedido(int idPedido)
         {
-            var pedido = context.Pedido.Where(p => p.idPedido == idPedido && p.activo == true).FirstOrDefault();
+            var pedido = context.Pedido.Where(p => p.idPedido == idPedido).FirstOrDefault();
 
             return pedido;
         }
@@ -217,7 +243,7 @@ namespace hjs_encomiendas_servidor.Dominio
             return result;
         }
 
-        public BaseMethodOut actualizarEstadoPedido(int idPedido, int estado)
+        public BaseMethodOut actualizarEstadoPedido(int idPedido, int estado, int metros)
         {
             BaseMethodOut result = new BaseMethodOut { OperationResult = OperationResult.Success };
 
@@ -226,9 +252,20 @@ namespace hjs_encomiendas_servidor.Dominio
             if (pedido != null)
             {
                 pedido.estado = estado;
-                if(estado == ((int)Constantes.ESTADO_PEDIDO_RETIRADO))
+
+                if (metros > 0)
+                {
+                    pedido.distanciaRecorrida = metros;
+                }
+                
+                if (estado != ((int)Constantes.ESTADO_PEDIDO_ENTREGADO))
                 {
                     pedido.fechaRetiro = DateTime.Now;
+                }
+                
+                if (estado == ((int)Constantes.ESTADO_PEDIDO_RETIRADO))
+                {
+                    pedido.fechaRetirado = DateTime.Now;
                 } else if(estado == ((int)Constantes.ESTADO_PEDIDO_ENTREGADO))
                 {
                     pedido.fechaEntrega = DateTime.Now;
@@ -243,16 +280,21 @@ namespace hjs_encomiendas_servidor.Dominio
             return result;
         }
 
-        public List<int> obtenerCantidadPedidosPorMes()
+        public List<int> obtenerCantidadPedidosPorMes(int anio)
         {
+            if(anio == 0)
+            {
+                anio = DateTime.Now.Year;
+            }
+            
             var query = (from m in Enumerable.Range(1, 12)
-                         join p in context.Pedido on m equals p.fechaCreacion.Month into monthGroup
-                         select monthGroup.Count()
+                         join p in context.Pedido on m equals p.fechaRetiro.Month into monthGroup
+                         select monthGroup.Count(p => p.activo == true && p.fechaRetiro.Year == anio)
              ).ToList();
 
             return query;
         }
-        
-       
+
+
     }
 }

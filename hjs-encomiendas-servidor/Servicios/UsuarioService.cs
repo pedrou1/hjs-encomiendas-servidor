@@ -161,10 +161,10 @@ namespace hjs_encomiendas_servidor.Servicios
             }
         }
 
-        [HttpGet("por-mes")]
-        public JsonResult obtenerCantidadClientesPorMes()
+        [HttpGet("por-mes/{anio}")]
+        public JsonResult obtenerCantidadClientesPorMes(int anio)
         {
-            List<int> cantidadPedidos = dUsuario.obtenerCantidadClientesPorMes();
+            List<int> cantidadPedidos = dUsuario.obtenerCantidadClientesPorMes(anio);
 
             JsonResult json = new JsonResult(cantidadPedidos);
             return json;
@@ -200,6 +200,16 @@ namespace hjs_encomiendas_servidor.Servicios
 
         }
 
+        [HttpGet("choferReserva")]
+        public JsonResult obtenerChoferDeReserva()
+        {
+            Usuario? chofer = dUsuario.obtenerChoferDeReserva();
+
+            JsonResult json = new JsonResult(chofer);
+            return json;
+
+        }
+
         // Solo para testing
         [HttpPost("registrarVarios")]
         public OperationResult registrarVariosUsuarios(List<UsuarioVO> usuarios)
@@ -222,6 +232,14 @@ namespace hjs_encomiendas_servidor.Servicios
                 }
             }
             return OperationResult.Error;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("usuarios/c")]
+        public JsonResult obtenerUser()
+        {
+            JsonResult json = new JsonResult("1");
+            return json;
         }
 
     }
