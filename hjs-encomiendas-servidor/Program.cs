@@ -33,7 +33,8 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
            .AllowAnyHeader();
 }));
 
-var tokenKey = builder.Configuration.GetValue<string>("TokenKey"); // FIXME: UTILIZAR ESTA LINEA EN PRODUCCION
+var tokenKey = "";
+//var tokenKey = builder.Configuration.GetValue<string>("TokenKey"); // FIXME: UTILIZAR ESTA LINEA EN PRODUCCION
 var key = Encoding.ASCII.GetBytes(tokenKey);
 
 builder.Services.AddAuthentication(x =>

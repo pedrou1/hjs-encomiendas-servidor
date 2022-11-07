@@ -66,8 +66,20 @@ namespace hjs_encomiendas_servidor.Dominio
             int distanciaRecorrida = 0;
             if (getData.idUnidad != 0 && getData.fechaDesde != null && getData.fechaHasta != null)
             {
-                var query = (from p in context.Pedido where p.activo == true && p != null && p.idTransporte == getData.idUnidad
+                int? query = 0;
+                
+                if (estados != null && estados.Length > 0)
+                {
+                    query = (from p in context.Pedido
+                                  where p.activo == true && p != null && p.idTransporte == getData.idUnidad
+                             && p.fechaRetiro >= getData.fechaDesde && p.fechaRetiro <= getData.fechaHasta
+                             && estados.Contains(p.estado) select p.distanciaRecorrida).Sum();
+                } else
+                {
+                       query = (from p in context.Pedido where p.activo == true && p != null && p.idTransporte == getData.idUnidad
                              && p.fechaRetiro >= getData.fechaDesde && p.fechaRetiro <= getData.fechaHasta select p.distanciaRecorrida).Sum();
+                }
+                
                 if (query != null)
                 {
                     distanciaRecorrida = (int)query;
