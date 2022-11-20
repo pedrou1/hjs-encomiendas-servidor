@@ -119,6 +119,24 @@ namespace hjs_encomiendas_servidor.Servicios
                 throw ex;
             }
         }
+        
+        [HttpPut("recuperar-usuario")]
+        public BaseMethodOut recuperarUsuario(UsuarioVO usuario)
+        {
+
+            if (usuario == null) return new BaseMethodOut { OperationResult = OperationResult.InvalidUser };
+
+            try
+            {
+                var result = dUsuario.recuperarUsuario(usuario);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         [HttpGet()]
         public JsonResult obtenerUsuarios([FromQuery] GetDataInUsuariosVO getData)
@@ -132,6 +150,25 @@ namespace hjs_encomiendas_servidor.Servicios
                 }
                 
                 UsuariosVO usuarios = dUsuario.obtenerUsuarios(getData, categorias);
+
+                JsonResult json = new JsonResult(usuarios);
+
+                return json;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        [HttpGet("eliminados")]
+        public JsonResult obtenerUsuariosEliminados([FromQuery] GetDataInUsuariosVO getData)
+        {
+            try
+            {
+
+                UsuariosVO usuarios = dUsuario.obtenerUsuariosEliminados(getData);
 
                 JsonResult json = new JsonResult(usuarios);
 

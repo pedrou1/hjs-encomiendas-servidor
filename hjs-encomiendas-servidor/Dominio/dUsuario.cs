@@ -90,13 +90,28 @@ namespace hjs_encomiendas_servidor.Dominio
             }
             
             var count = query.Count();
-            var usuarios = query.OrderBy(u => u.nombre)
+            var usuarios = query.OrderBy(u => u.apellido)
                 .Skip(getData.PageIndex)
                 .Take(getData.PageSize).Include(u => u.categoriaUsuario)
                 .ToList();
 
             UsuariosVO usuariosVO = new UsuariosVO{ usuarios = usuarios, totalRows = count, OperationResult = OperationResult.Success };
             
+            return usuariosVO;
+        }
+
+        public UsuariosVO obtenerUsuariosEliminados(GetDataInVO getData)
+        {
+            var qry = (from u in context.Usuarios where u.activo == false select u);
+            
+            var count = qry.Count();
+            var usuarios = qry.OrderBy(p => p.idUsuario)
+                .Skip(getData.PageIndex)
+                .Take(getData.PageSize).Include(u => u.categoriaUsuario)
+                .ToList();
+
+            UsuariosVO usuariosVO = new UsuariosVO { usuarios = usuarios, totalRows = count, OperationResult = OperationResult.Success };
+
             return usuariosVO;
         }
 
@@ -247,6 +262,24 @@ namespace hjs_encomiendas_servidor.Dominio
                     string hashedPassword = Utils.hashPassword(usuarioVO.password);
                     usuario.password = hashedPassword;
                 }
+                context.SaveChanges();
+
+                return result;
+            }
+
+            result.OperationResult = OperationResult.Error;
+            return result;
+        }
+
+        public BaseMethodOut recuperarUsuario(UsuarioVO usuarioVO)
+        {
+            BaseMethodOut result = new BaseMethodOut { OperationResult = OperationResult.Success };
+
+            var usuario = context.Usuarios.Where(u => u.idUsuario == usuarioVO.idUsuario && u.activo == false).FirstOrDefault();
+            
+            if (usuario != null)
+            {
+                usuario.activo = true;
                 context.SaveChanges();
 
                 return result;
